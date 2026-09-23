@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "kabuken": {
+      "type": "http",
+      "url": "https://kabuken.intellics.ai/mcp"
+    }
+  }
+}

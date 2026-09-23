@@ -1,0 +1,20 @@
+{
+  "name": "kabuken",
+  "description": "Individual XBRL facts from Japanese statutory EDINET filings, with bilingual EN/JA labels, calculation trees, segment breakdowns, and provenance. Validated coverage: 99 of 99 TOPIX-100 constituents, 1,967 filings (measured 2026-09-21). Broader coverage in progress. No stock prices. Signup required.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Intellics K.K.",
+    "url": "https://kabuken.intellics.ai"
+  },
+  "homepage": "https://kabuken.intellics.ai",
+  "repository": "https://github.com/intellics-ai/kabuken-mcp-plugin",
+  "license": "MIT",
+  "keywords": [
+    "japan",
+    "equities",
+    "edinet",
+    "xbrl",
+    "finance",
+    "mcp"
+  ]
+}
