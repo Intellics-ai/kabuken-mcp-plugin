@@ -105,3 +105,13 @@ https://kabuken.intellics.ai/privacy
 ## Documentation
 
 https://kabuken.intellics.ai/docs
+
+## Registry manifest
+
+`server.json` describes the hosted Kabuken MCP server (`https://kabuken.intellics.ai/mcp`)
+in the [official MCP registry](https://registry.modelcontextprotocol.io) format and is
+published from this repo under the `io.github.intellics-ai/kabuken` namespace. The server's
+own source runs in a separate, private repository; this public repo is the registry's
+companion listing and the home for the plugin package documented above. Publishing runs via
+`.github/workflows/publish-registry.yml` (manual `workflow_dispatch`, GitHub OIDC
+authentication, no stored secrets).

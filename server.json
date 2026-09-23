@@ -1,0 +1,40 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-09-16/server.schema.json",
+  "name": "io.github.intellics-ai/kabuken",
+  "description": "Japanese EDINET XBRL facts: bilingual labels, financials, screening. No prices. Signup required.",
+  "status": "active",
+  "repository": {
+    "url": "https://github.com/Intellics-ai/kabuken-mcp-plugin",
+    "source": "github",
+    "id": "1383159624"
+  },
+  "version": "2.0.1",
+  "websiteUrl": "https://kabuken.intellics.ai",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://kabuken.intellics.ai/mcp"
+    }
+  ],
+  "_meta": {
+    "io.modelcontextprotocol.registry/publisher-provided": {
+      "description_ja": "EDINET開示書類のXBRLデータを、ファクト単位でAIクライアントに提供。日英バイリンガルラベル、財務データ、スクリーニング。株価は含みません。利用にはサインアップが必要です。",
+      "categories": ["finance", "data"],
+      "auth": {
+        "type": "bearer",
+        "description": "API key or OAuth 2.0 access token. OAuth clients discover the authorization server via the resource_metadata URL returned in the WWW-Authenticate header on an unauthenticated request, or directly at https://kabuken.intellics.ai/.well-known/oauth-protected-resource/mcp.",
+        "oauth": {
+          "protected_resource_metadata": "https://kabuken.intellics.ai/.well-known/oauth-protected-resource/mcp",
+          "discovery": "https://kabuken.intellics.ai/.well-known/oauth-authorization-server/mcp"
+        }
+      },
+      "coverage": {
+        "validated": "99 of 99 currently-tracked TOPIX-100 constituents, 1,967 filings, zero missing facts (measured 2026-09-21)",
+        "broader_coverage": "in progress, partial outside the validated set",
+        "excludes": "stock prices and market data"
+      },
+      "signupRequired": true,
+      "install": "claude mcp add kabuken https://kabuken.intellics.ai/mcp"
+    }
+  }
+}
