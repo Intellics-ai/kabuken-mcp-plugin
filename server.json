@@ -1,6 +1,6 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-09-16/server.schema.json",
-  "name": "io.github.intellics-ai/kabuken",
+  "name": "io.github.Intellics-ai/kabuken",
   "description": "Japanese EDINET XBRL facts: bilingual labels, financials, screening. No prices. Signup required.",
   "status": "active",
   "repository": {
