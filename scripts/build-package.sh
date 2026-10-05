@@ -7,6 +7,8 @@
 #   .claude-plugin/, .mcp.json   Claude Code files. OpenAI reads mcp.json;
 #                                .mcp.json uses Claude's "type": "http".
 #   skills/kabuken-setup/        Claude Code setup steps (/mcp, claude mcp add).
+#   README.md                    GitHub page only; it lists plan prices, which
+#                                OpenAI does not allow in listing context.
 #   server.json, SETUP.md, .github/, scripts/
 set -euo pipefail
 
@@ -20,7 +22,7 @@ stage="$out/stage"
 rm -rf "$out"
 mkdir -p "$stage"
 
-cp plugin.json mcp.json LICENSE README.md "$stage/"
+cp plugin.json mcp.json LICENSE "$stage/"
 cp -R assets "$stage/assets"
 mkdir -p "$stage/skills"
 for d in skills/*/; do
@@ -33,6 +35,11 @@ find "$stage" -name '.DS_Store' -delete
 while IFS= read -r p; do
   [ -e "$stage/$p" ] || { echo "ERROR: $p is referenced in plugin.json but not packaged" >&2; exit 1; }
 done < <(jq -r '.. | strings | select(startswith("./"))' plugin.json)
+
+if [ -n "$(find "$stage" -iname 'README*' -print -quit)" ]; then
+  echo "ERROR: a README file is staged; it must not be packaged" >&2
+  exit 1
+fi
 
 zipfile="kabuken-plugin-$version.zip"
 (cd "$stage" && TZ=UTC find . -exec touch -t 202601010000 {} + && zip -X -r -q "../$zipfile" .)

@@ -18,8 +18,10 @@ argument).
    user named a period, pick the matching filing. Otherwise use the most
    recent annual securities report (有価証券報告書). Note its `doc_id`.
 3. Call `get_segment_breakdown` with that `doc_id` (optional `fact_name`
-   to filter to one axis, optional `limit`, default 100). If the call
-   returns an upgrade message, say so plainly and stop.
+   to filter to one axis, optional `limit`, default 100). If a tool
+   says it is available on other plans, tell the user which plan it needs
+   and share https://kabuken.intellics.ai/pricing as plan details, then
+   stop.
 4. Present the breakdown grouped by axis (business segment, geographic
    segment, or consolidation scope), with EN/JA member labels and the
    reported figures. State the source filing and period for every number.

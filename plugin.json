@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "kabuken",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Financial data from the official EDINET filings of Japanese listed companies, with the source filing for each figure. No stock prices or investment advice.",
   "author": {
     "name": "Intellics K.K.",
@@ -49,7 +49,72 @@
         "logo": "./assets/logo.png",
         "logoDark": "./assets/logo-dark.png"
       },
-      "onboardingSkill": "./skills/get-started/SKILL.md"
+      "onboardingSkill": "./skills/get-started/SKILL.md",
+      "review": {
+        "test_cases": {
+          "positive": [
+            {
+              "description": "Company lookup: resolve a company name to its EDINET entity code and find its latest annual securities report.",
+              "prompt": "Find Toyota Motor in Kabuken. What is its EDINET entity code, and what is its latest annual securities report?",
+              "tools_triggered": "search_companies, list_documents",
+              "expected_behavior": "Returns Toyota Motor Corporation (トヨタ自動車株式会社) with entity code E02144, then lists its filings and identifies the most recent annual securities report (有価証券報告書) with its submission date, period and source filing doc_id. No stock price is shown."
+            },
+            {
+              "description": "Latest annual revenue and operating income, with the source filing.",
+              "prompt": "What were Sony Group's revenue and operating income in its latest annual report?",
+              "tools_triggered": "search_companies, get_company_financials",
+              "expected_behavior": "Resolves Sony Group Corporation to its entity code, then returns revenue and operating income for the latest annual period from its EDINET filing. State the fiscal period and cite the source EDINET filing by its doc_id for every figure. Does not estimate any figure or add a stock price, market cap or valuation ratio."
+            },
+            {
+              "description": "Business and geographic segment breakdown from one filing.",
+              "prompt": "Show Honda Motor's revenue by business segment from its latest annual securities report.",
+              "tools_triggered": "search_companies, list_documents, get_segment_breakdown",
+              "expected_behavior": "Resolves Honda Motor Co., Ltd., picks its most recent annual securities report from the filing list, and returns the segment figures grouped by axis with English and Japanese member labels. State the fiscal period and cite the source EDINET filing by its doc_id for every figure. Keeps the EDINET Taxonomy notice that the tool returns."
+            },
+            {
+              "description": "Major shareholders of a listed company.",
+              "prompt": "Who are the major shareholders of Mitsubishi UFJ Financial Group?",
+              "tools_triggered": "search_companies, get_major_shareholders",
+              "expected_behavior": "Resolves Mitsubishi UFJ Financial Group to its entity code and lists the major shareholders with their holdings as reported in its EDINET filings. Cites the source EDINET filing by its doc_id and states the reporting date. Does not give investment advice."
+            },
+            {
+              "description": "Peer comparison of two to five companies from their latest annual reports.",
+              "prompt": "Compare Toyota Motor and Honda Motor on revenue, operating income, net income and total assets.",
+              "tools_triggered": "search_companies, compare_companies",
+              "expected_behavior": "Resolves both companies to entity codes (Toyota is E02144), calls compare_companies once, and shows a table with one column per company and the period-end date of each, because fiscal year-ends can differ. Cites the source EDINET filing by its doc_id for each company. A missing metric is shown with its omission reason, not a guessed number. No ranking by price-based metrics."
+            }
+          ],
+          "negative": [
+            {
+              "description": "Stock prices are out of scope. Kabuken has filing data only, no market data.",
+              "prompt": "What is Toyota's stock price today?",
+              "expected_behavior": "Kabuken is not called, or the assistant explains that Kabuken has no stock price or market data and does not invent a price."
+            },
+            {
+              "description": "Investment advice is out of scope.",
+              "prompt": "Should I buy or sell Sony shares right now?",
+              "expected_behavior": "Kabuken is not called for a recommendation. The assistant does not give buy or sell advice and can offer reported figures from Sony's filings instead."
+            },
+            {
+              "description": "Companies outside Japan's EDINET system are not covered.",
+              "prompt": "What was Apple's revenue last year?",
+              "expected_behavior": "Kabuken is not called, or the assistant explains that Kabuken covers only Japanese companies that file on EDINET and has no data for Apple. No figure is invented."
+            }
+          ]
+        },
+        "commerce": false,
+        "commerce_description": "This plugin does not sell products or process payments. It only reads published filing data."
+      },
+      "publication": {
+        "countries": [],
+        "release_notes": "Adds review test cases, Japanese listing text and worldwide availability. Skills now handle tools that are available on other plans with neutral wording.",
+        "translations": {
+          "ja-JP": {
+            "subtitle": "日本の上場企業の開示データ",
+            "description": "Kabuken（カブケン）は、日本の上場企業の財務データを提供します。会社名で企業を検索し、財務諸表、事業別・地域別のセグメント情報、大株主、提出書類の一覧を取得できます。2社から5社までを並べて比較することもできます。データはEDINETの公式な提出書類に基づき、各数値には出典となる書類を示します。項目名は英語と日本語で表示できます。株価や投資助言は提供しません。Kabukenのアカウントが必要です（Googleでサインイン）。\n\n主な機能:\n・日本の上場企業を検索\n・EDINET提出書類から財務諸表を表示\n・セグメント別の内訳を表示\n・複数の企業を並べて比較\n・企業の提出書類を一覧表示\n\n質問の例:\n・トヨタ自動車のEDINETコードは？\n・ソニーグループの最新の有価証券報告書の売上高と営業利益は？\n・トヨタとホンダを売上高、純利益、総資産で比較して"
+          }
+        }
+      }
     }
   }
 }

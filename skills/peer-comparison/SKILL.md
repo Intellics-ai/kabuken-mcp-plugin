@@ -19,8 +19,9 @@ commas, given by the user (in Claude Code, the command argument).
    codes (not names or tickers). It returns revenue, net income, total
    assets, equity, operating income and the period-end date from each
    company's latest annual securities report (有価証券報告書).
-4. If the call returns an upgrade message, say so plainly and stop. Do not
-   approximate the comparison from other tools.
+4. If a tool says it is available on other plans, tell the user which plan
+   it needs and share https://kabuken.intellics.ai/pricing as plan details,
+   then stop. Do not approximate the comparison from other tools.
 5. Present a table, one row per metric and one column per company. Show the
    period-end date for each company, because fiscal year-ends can differ.
    If a metric is null, show its `omission_reason` instead of a number.

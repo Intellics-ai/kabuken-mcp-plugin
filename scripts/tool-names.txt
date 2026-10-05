@@ -1,0 +1,16 @@
+analyze_document
+compare_companies
+get_account_quota
+get_calculation_tree
+get_company
+get_company_financials
+get_document_summary
+get_financial_facts
+get_industry_overview
+get_major_shareholders
+get_risk_context
+get_segment_breakdown
+list_documents
+list_industries
+screen_companies
+search_companies
