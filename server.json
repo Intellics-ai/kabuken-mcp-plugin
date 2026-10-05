@@ -34,7 +34,7 @@
         "excludes": "stock prices and market data"
       },
       "signupRequired": true,
-      "install": "claude mcp add kabuken https://kabuken.intellics.ai/mcp"
+      "install": "claude mcp add --transport http kabuken https://kabuken.intellics.ai/mcp"
     }
   }
 }

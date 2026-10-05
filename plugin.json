@@ -1,0 +1,55 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "kabuken",
+  "version": "1.1.0",
+  "description": "Financial data from the official EDINET filings of Japanese listed companies, with the source filing for each figure. No stock prices or investment advice.",
+  "author": {
+    "name": "Intellics K.K.",
+    "url": "https://kabuken.intellics.ai"
+  },
+  "homepage": "https://kabuken.intellics.ai",
+  "repository": "https://github.com/Intellics-ai/kabuken-mcp-plugin",
+  "license": "MIT",
+  "keywords": [
+    "japan",
+    "equities",
+    "edinet",
+    "xbrl",
+    "filings",
+    "finance"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Kabuken",
+        "shortDescription": "Japanese company filings data",
+        "longDescription": "Kabuken gives you financial data on Japanese listed companies. Find a company by name, then get its financial statements, business and geographic segments, major shareholders and filing list. You can also compare two to five companies side by side. Data from official EDINET filings, with the source filing for each figure. Labels are available in English and Japanese. No stock prices or investment advice. A Kabuken account is required; you sign in with Google.",
+        "developerName": "Intellics K.K.",
+        "category": "Finance",
+        "capabilities": [
+          "Search Japanese listed companies",
+          "Read financial statements from EDINET filings",
+          "Show segment breakdowns",
+          "Compare companies side by side",
+          "List company filings"
+        ],
+        "websiteURL": "https://kabuken.intellics.ai",
+        "supportURL": "https://kabuken.intellics.ai/support",
+        "privacyPolicyURL": "https://kabuken.intellics.ai/privacy",
+        "termsOfServiceURL": "https://kabuken.intellics.ai/terms",
+        "defaultPrompt": [
+          "What is Toyota's EDINET entity code?",
+          "What were Sony's revenue and operating income in its latest annual report?",
+          "Compare Toyota and Honda on revenue, net income and total assets."
+        ],
+        "brandColor": "#FF6B00",
+        "brandColorDark": "#FF9A52",
+        "composerIcon": "./assets/icon.png",
+        "composerIconDark": "./assets/icon-dark.png",
+        "logo": "./assets/logo.png",
+        "logoDark": "./assets/logo-dark.png"
+      },
+      "onboardingSkill": "./skills/get-started/SKILL.md"
+    }
+  }
+}

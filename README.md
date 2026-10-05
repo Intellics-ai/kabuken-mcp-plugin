@@ -23,6 +23,26 @@ This plugin declares a remote MCP server in `.mcp.json`
 then see [SETUP.md](./SETUP.md) or ask Claude "set up Kabuken" to
 authenticate.
 
+Claude Code without the plugin:
+
+```
+claude mcp add --transport http kabuken https://kabuken.intellics.ai/mcp
+```
+
+### ChatGPT (developer mode, beta)
+
+1. Download the latest plugin package:
+   [kabuken-plugin.zip](https://github.com/Intellics-ai/kabuken-mcp-plugin/releases/latest/download/kabuken-plugin.zip).
+2. Open [chatgpt.com/plugins](https://chatgpt.com/plugins), select **+**, then
+   **Create custom MCP server**.
+3. Upload the ZIP.
+4. Sign in with Google when ChatGPT asks you to connect Kabuken.
+
+The same repository is also an Agent Plugins package for ChatGPT and
+Codex: `plugin.json` and `mcp.json` at the root. Claude Code reads
+`.claude-plugin/plugin.json` and `.mcp.json`. See
+[Plugin package](#plugin-package).
+
 ## Tools
 
 16 read-only tools, grouped by purpose. None write or modify data.
@@ -105,6 +125,17 @@ https://kabuken.intellics.ai/privacy
 ## Documentation
 
 https://kabuken.intellics.ai/docs
+
+## Plugin package
+
+`scripts/build-package.sh` builds `dist/kabuken-plugin-<version>.zip` with
+`plugin.json` at the ZIP root, plus `mcp.json`, `skills/` (without the
+Claude Code-only `kabuken-setup` skill), `assets/`, `LICENSE` and
+`README.md`. `scripts/validate-package.sh` checks the manifests and skills.
+The `Plugin package` workflow runs both on every pull request and push to
+`main`, and attaches the ZIP to a GitHub release when a `v*` tag is pushed.
+The tag must match the `version` in `plugin.json`; keep that equal to
+`.claude-plugin/plugin.json`.
 
 ## Registry manifest
 
