@@ -14,6 +14,25 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v5
 
+      - name: Validate manifests and versions
+        run: bash scripts/validate-package.sh
+
+      - name: Require a release tag on this commit
+        run: |
+          version=$(jq -r '.version' server.json)
+          tag="v$version"
+          if ! git fetch --depth=1 origin "refs/tags/$tag:refs/tags/$tag"; then
+            echo "ERROR: tag $tag does not exist. Release $version (push tag $tag) before publishing to the MCP Registry." >&2
+            exit 1
+          fi
+          tag_sha=$(git rev-list -n 1 "$tag")
+          head_sha=$(git rev-parse HEAD)
+          if [ "$tag_sha" != "$head_sha" ]; then
+            echo "ERROR: tag $tag points to $tag_sha, but this run checked out $head_sha. Run the workflow from tag $tag or from the commit it points to." >&2
+            exit 1
+          fi
+          echo "ok   tag $tag is on $head_sha"
+
       - name: Install mcp-publisher
         run: |
           curl -L "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_$(uname -s | tr '[:upper:]' '[:lower:]')_$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/').tar.gz" | tar xz mcp-publisher

@@ -76,12 +76,16 @@ fi
 ja_len=$(jq "$oai.publication.translations[\"ja-JP\"].subtitle // \"\" | length" plugin.json)
 [ "$ja_len" -le 30 ] || err "ja-JP subtitle is longer than 30 characters ($ja_len)"
 
-v_root=$(jq -r '.version' plugin.json)
-v_claude=$(jq -r '.version' .claude-plugin/plugin.json)
-if [ "$v_root" = "$v_claude" ]; then
-  echo "ok   version $v_root (plugin.json = .claude-plugin/plugin.json)"
+# One version everywhere: Claude plugin, ChatGPT/Codex package, MCP Registry entry.
+v_root=$(jq -r '.version // empty' plugin.json)
+v_claude=$(jq -r '.version // empty' .claude-plugin/plugin.json)
+v_server=$(jq -r '.version // empty' server.json)
+if [ -z "$v_root" ] || [ -z "$v_claude" ] || [ -z "$v_server" ]; then
+  err "version missing: plugin.json '$v_root', .claude-plugin/plugin.json '$v_claude', server.json '$v_server'"
+elif [ "$v_root" = "$v_claude" ] && [ "$v_root" = "$v_server" ]; then
+  echo "ok   version $v_root (plugin.json = .claude-plugin/plugin.json = server.json)"
 else
-  err "version mismatch: plugin.json $v_root, .claude-plugin/plugin.json $v_claude"
+  err "version mismatch: plugin.json $v_root, .claude-plugin/plugin.json $v_claude, server.json $v_server (all three must be identical)"
 fi
 
 for s in skills/*/SKILL.md; do

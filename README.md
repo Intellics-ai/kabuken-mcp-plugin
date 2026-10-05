@@ -134,8 +134,17 @@ Claude Code-only `kabuken-setup` skill), `assets/`, `LICENSE` and
 `README.md`. `scripts/validate-package.sh` checks the manifests and skills.
 The `Plugin package` workflow runs both on every pull request and push to
 `main`, and attaches the ZIP to a GitHub release when a `v*` tag is pushed.
-The tag must match the `version` in `plugin.json`; keep that equal to
-`.claude-plugin/plugin.json`.
+The tag must match the `version` in `plugin.json`.
+
+## Versioning
+
+One version number covers the Claude plugin (`.claude-plugin/plugin.json`),
+the ChatGPT/Codex package (`plugin.json`) and the MCP Registry entry
+(`server.json`). `scripts/validate-package.sh` fails if the three differ.
+To release: bump all three to the same `X.Y.Z`, merge to `main`, push tag
+`vX.Y.Z`, then run the **Publish to MCP Registry** workflow manually from
+that tag. The workflow refuses to publish unless tag `v<server.json version>`
+is on the checked-out commit.
 
 ## Registry manifest
 
