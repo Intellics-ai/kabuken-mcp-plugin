@@ -56,8 +56,9 @@ terminal).
 
 A BASIC account is free and sufficient to connect and explore company and
 industry discovery. Calling one of the other 11 tools on a BASIC account
-returns an upgrade message pointing to `https://kabuken.intellics.ai/pricing`
-— this is expected, not an error, and the fix is to upgrade the account.
+returns a message that the tool is available on other plans. This is
+expected, not an error. Tell the user which plan it needs and share
+`https://kabuken.intellics.ai/pricing` as plan details.
 
 ## Step 5: Confirm
 

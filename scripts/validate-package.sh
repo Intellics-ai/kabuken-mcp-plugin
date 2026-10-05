@@ -33,6 +33,49 @@ fi
 short=$(jq -r '.extensions["com.openai"].interface.shortDescription // empty' plugin.json)
 [ "${#short}" -le 30 ] || err "shortDescription is longer than 30 characters"
 
+# Review cases: OpenAI requires exactly 5 positive and 3 negative cases.
+oai='.extensions["com.openai"]'
+n_pos=$(jq "$oai.review.test_cases.positive | length" plugin.json)
+n_neg=$(jq "$oai.review.test_cases.negative | length" plugin.json)
+[ "$n_pos" -eq 5 ] || err "review needs exactly 5 positive test cases, found $n_pos"
+[ "$n_neg" -eq 3 ] || err "review needs exactly 3 negative test cases, found $n_neg"
+[ "$fail" -ne 0 ] || echo "ok   review cases: $n_pos positive, $n_neg negative"
+
+missing=$(jq -r "$oai.review.test_cases.positive[] | select((.description // \"\") == \"\" or (.prompt // \"\") == \"\" or (.tools_triggered // \"\") == \"\" or (.expected_behavior // \"\") == \"\") | .prompt" plugin.json)
+[ -z "$missing" ] || err "positive case missing description, prompt, tools_triggered or expected_behavior: $missing"
+
+# Every tools_triggered name must be a real server tool (scripts/tool-names.txt).
+[ -s scripts/tool-names.txt ] || err "scripts/tool-names.txt is missing or empty"
+while IFS= read -r t; do
+  [ -n "$t" ] || continue
+  if grep -qxF "$t" scripts/tool-names.txt; then
+    echo "ok   tool $t"
+  else
+    err "tools_triggered names an unknown tool: $t"
+  fi
+done < <(jq -r "$oai.review.test_cases | (.positive + .negative)[] | .tools_triggered // empty" plugin.json | tr ',' '\n' | sed 's/^[[:space:]]*//; s/[[:space:]]*$//' | sort -u)
+
+# Never put credentials or reviewer instructions in the package.
+for k in test_credentials reviewer_instructions; do
+  if jq -e --arg k "$k" '[.. | objects | has($k)] | any' plugin.json >/dev/null; then
+    err "plugin.json must not contain $k"
+  fi
+done
+
+# Listing text must not contain prices or plan names.
+listing=$(jq -r '.description, (.extensions["com.openai"] | .interface, .review, .publication | .. | strings)' plugin.json)
+if printf '%s\n' "$listing" | grep -nE '\$[0-9]|[0-9]+(\.[0-9]+)? ?(USD|JPY)|¥|￥|円'; then
+  err "plugin.json listing text contains a price"
+fi
+if printf '%s\n' "$listing" | grep -nwE 'BASIC|INVESTOR|DEVELOPER'; then
+  err "plugin.json listing text contains a plan name (BASIC/INVESTOR/DEVELOPER)"
+fi
+[ "$fail" -ne 0 ] || echo "ok   listing text has no prices or plan names"
+
+# jq counts characters, not bytes, so this works in any locale.
+ja_len=$(jq "$oai.publication.translations[\"ja-JP\"].subtitle // \"\" | length" plugin.json)
+[ "$ja_len" -le 30 ] || err "ja-JP subtitle is longer than 30 characters ($ja_len)"
+
 v_root=$(jq -r '.version' plugin.json)
 v_claude=$(jq -r '.version' .claude-plugin/plugin.json)
 if [ "$v_root" = "$v_claude" ]; then
