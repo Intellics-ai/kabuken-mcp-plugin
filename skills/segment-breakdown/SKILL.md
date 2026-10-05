@@ -1,24 +1,27 @@
 ---
-description: Show the business-segment or geographic breakdown for a Japanese listed company's filing using Kabuken MCP tools.
+name: segment-breakdown
+description: Show the business-segment or geographic breakdown from a Japanese listed company's EDINET filing using Kabuken tools.
 disable-model-invocation: true
 ---
 
 # Segment breakdown
 
-Argument: a company name, ticker, or EDINET entity code, optionally
-followed by a fiscal period — "$ARGUMENTS".
+Input: a company name, ticker, or EDINET entity code, optionally followed
+by a fiscal period, given by the user (in Claude Code, the command
+argument).
 
-1. Call `get_company` to resolve the company. If ambiguous, call
-   `search_companies` first and ask the user to pick one.
-2. Call `list_documents` for that company to find its filings. If the user
-   named a specific period, pick the matching filing; otherwise use the
-   most recent annual securities report (有価証券報告書).
-3. Call `get_segment_breakdown` for that filing's `doc_id`. If the account
-   is BASIC tier and the call is rejected with an upgrade message, say so
-   plainly and stop.
+1. Resolve the company to an EDINET entity code (for example `E02144`):
+   `search_companies` with `query` for a name, or `get_company` with `id`
+   and `id_type: "ticker"` for a ticker. If a name is ambiguous, ask the
+   user to pick one.
+2. Call `list_documents` with `entity_code` to list the filings. If the
+   user named a period, pick the matching filing. Otherwise use the most
+   recent annual securities report (有価証券報告書). Note its `doc_id`.
+3. Call `get_segment_breakdown` with that `doc_id` (optional `fact_name`
+   to filter to one axis, optional `limit`, default 100). If the call
+   returns an upgrade message, say so plainly and stop.
 4. Present the breakdown grouped by axis (business segment, geographic
-   segment, or consolidation scope), with bilingual EN/JA member labels and
-   the reported figures. Note that this tool surfaces EDINET Taxonomy
-   content, which carries its own attribution requirement separate from
-   the filing data itself — mention the source filing and period for every
-   number.
+   segment, or consolidation scope), with EN/JA member labels and the
+   reported figures. State the source filing and period for every number.
+   Segment labels come from the EDINET Taxonomy, which has its own
+   copyright notice; keep the notice the tool returns.

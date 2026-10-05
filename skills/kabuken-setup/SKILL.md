@@ -1,4 +1,5 @@
 ---
+name: kabuken-setup
 description: Guide the user through connecting the Kabuken MCP server, choosing between OAuth sign-in and an API key, and explaining what each subscription tier unlocks. Use when the user asks to set up, connect, authenticate, or troubleshoot the Kabuken MCP server.
 ---
 
@@ -21,13 +22,13 @@ Kabuken supports OAuth 2.0 Authorization Code with PKCE and is the preferred
 sign-in method — no key to copy or store.
 
 1. Run `/mcp` and select `kabuken`, then follow the browser prompt to sign
-   in. Alternatively run `claude mcp login kabuken` from the shell.
+   in. If the plugin is not enabled, add the server from the shell first:
+   `claude mcp add --transport http kabuken https://kabuken.intellics.ai/mcp`.
 2. If the user has no Kabuken account yet, direct them to
    `https://kabuken.intellics.ai` to sign up first — a BASIC-tier account is
    free and is enough to complete OAuth and try the discovery tools.
 3. Tokens are stored securely by Claude Code and refreshed automatically.
-   Use "Clear authentication" in the `/mcp` menu, or `claude mcp logout
-   kabuken`, to revoke access.
+   Use "Clear authentication" in the `/mcp` menu to revoke access.
 
 ## Step 3: Authenticate with an API key (fallback)
 

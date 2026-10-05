@@ -1,24 +1,28 @@
 ---
-description: Build a financial snapshot of one Japanese listed company using Kabuken MCP tools.
+name: company-snapshot
+description: Build a financial snapshot of one Japanese listed company from its EDINET filings using Kabuken tools.
 disable-model-invocation: true
 ---
 
 # Company snapshot
 
-Argument: a company name, ticker, or EDINET entity code — "$ARGUMENTS".
+Input: one company name, ticker, or EDINET entity code, given by the user
+(in Claude Code, the command argument).
 
-1. Call `get_company` to resolve "$ARGUMENTS" to a company record. If the
-   name is ambiguous, call `search_companies` first and ask the user to
-   pick one before continuing.
-2. Call `get_company_financials` for that company to get multi-period
-   income statement, balance sheet, and cash flow figures. If the account
-   is BASIC tier and this call is rejected with an upgrade message, say so
-   plainly and stop rather than guessing at figures.
-3. Call `get_risk_context` for the same company to surface any BOJ
-   rate-sensitivity or METI export-control notes.
-4. Present a short snapshot: company name (EN/JA), industry, latest period
-   revenue, operating income, net income, total assets, and equity, plus
-   any risk-context notes. State the filing period and EDINET source for
-   every figure — never present a number without its period and source.
-5. Do not add a stock price, market cap, or P/E figure — Kabuken has no
-   price data.
+1. Resolve the company to an EDINET entity code (for example `E02144`):
+   - name: call `search_companies` with `query`. If several companies
+     match, ask the user to pick one before continuing;
+   - ticker: call `get_company` with `id` and `id_type: "ticker"`;
+   - entity code: call `get_company` with `id` (`id_type` defaults to
+     `entity_code`).
+2. Call `get_company_financials` with `entity_code` (optional
+   `period_type`: `ANNUAL` default, `INTERIM` or `ALL`; optional `periods`,
+   default 3). If the call returns an upgrade message, say so plainly and
+   stop. Do not guess figures.
+3. Call `get_risk_context` with `entity_code` for BOJ rate-sensitivity and
+   METI export-control notes.
+4. Present a short snapshot: company name (EN/JA), industry, and for the
+   latest period revenue, operating income, net income, total assets and
+   equity, plus any risk-context notes. State the period and source filing
+   for every figure.
+5. Do not add a stock price, market cap or P/E. Kabuken has no price data.

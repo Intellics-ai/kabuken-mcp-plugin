@@ -1,27 +1,28 @@
 ---
-description: Compare 2-5 Japanese listed companies side by side using Kabuken MCP tools.
+name: peer-comparison
+description: Compare 2-5 Japanese listed companies side by side from their latest annual reports using Kabuken tools.
 disable-model-invocation: true
 ---
 
 # Peer comparison
 
-Argument: 2 to 5 company names, tickers, or EDINET entity codes, separated
-by commas — "$ARGUMENTS".
+Input: 2 to 5 company names, tickers, or EDINET entity codes, separated by
+commas, given by the user (in Claude Code, the command argument).
 
-1. Split "$ARGUMENTS" into individual company references. If there are
-   fewer than 2 or more than 5, ask the user to adjust before continuing.
-2. Resolve each ambiguous reference with `search_companies` or `get_company`
-   before calling the comparison tool.
-3. Call `compare_companies` with the resolved companies. It returns a
-   side-by-side matrix from each company's latest annual securities report:
-   revenue, net income, total assets, equity, operating income, and the
-   period-end date.
-4. If the account is BASIC tier and the call is rejected with an upgrade
-   message, say so plainly and stop rather than approximating the
-   comparison from other tools.
-5. Present the result as a table, one row per metric, one column per
-   company, with the period-end date shown for each company since fiscal
-   year-ends can differ across the set.
-6. Do not rank companies by a price-based metric (P/E, market cap,
-   dividend yield) — Kabuken has no price data. Stick to the fundamentals
-   the tool actually returns.
+1. Split the input into individual companies. If there are fewer than 2 or
+   more than 5, ask the user to adjust before continuing.
+2. Resolve each company to an EDINET entity code (for example `E02144`):
+   `search_companies` with `query` for a name, or `get_company` with `id`
+   and `id_type: "ticker"` for a ticker. Ask the user if a name is
+   ambiguous.
+3. Call `compare_companies` with `entity_codes` set to the list of entity
+   codes (not names or tickers). It returns revenue, net income, total
+   assets, equity, operating income and the period-end date from each
+   company's latest annual securities report (有価証券報告書).
+4. If the call returns an upgrade message, say so plainly and stop. Do not
+   approximate the comparison from other tools.
+5. Present a table, one row per metric and one column per company. Show the
+   period-end date for each company, because fiscal year-ends can differ.
+   If a metric is null, show its `omission_reason` instead of a number.
+6. Do not rank companies by a price-based metric (P/E, market cap, dividend
+   yield). Kabuken has no price data.

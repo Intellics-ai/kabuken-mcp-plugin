@@ -1,0 +1,76 @@
+name: Plugin package
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Validate manifests and skills
+        run: bash scripts/validate-package.sh
+
+      - name: Read version
+        id: version
+        run: echo "version=$(jq -r '.version' plugin.json)" >> "$GITHUB_OUTPUT"
+
+      - name: Check tag matches version
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          TAG: ${{ github.ref_name }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          if [ "$TAG" != "v$VERSION" ]; then
+            echo "ERROR: tag $TAG does not match plugin.json version $VERSION" >&2
+            exit 1
+          fi
+
+      - name: Build ZIP
+        run: bash scripts/build-package.sh
+
+      - name: Show ZIP contents
+        run: unzip -l dist/kabuken-plugin.zip
+
+      - name: Upload ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: kabuken-plugin-${{ steps.version.outputs.version }}
+          path: dist/*.zip
+          if-no-files-found: error
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download ZIP
+        uses: actions/download-artifact@v4
+        with:
+          name: kabuken-plugin-${{ needs.build.outputs.version }}
+          path: dist
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ github.ref_name }}
+          VERSION: ${{ needs.build.outputs.version }}
+        run: |
+          gh release create "$TAG" \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "Kabuken plugin $VERSION" \
+            --notes "ChatGPT/Codex plugin package (Agent Plugins format). Stable link to the latest package: https://github.com/$GITHUB_REPOSITORY/releases/latest/download/kabuken-plugin.zip" \
+            "dist/kabuken-plugin-$VERSION.zip" \
+            dist/kabuken-plugin.zip
