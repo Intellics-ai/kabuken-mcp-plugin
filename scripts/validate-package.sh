@@ -76,7 +76,7 @@ if printf '%s\n' "$all_text" | grep -nwE 'BASIC|INVESTOR|DEVELOPER'; then
 fi
 [ "$fail" -ne 0 ] || echo "ok   listing text has no prices or plan names"
 
-# The Claude listing and every skill (packaged or not) must not contain prices
+# The Claude listing, every skill (packaged or not), README.md and SETUP.md must not contain prices
 # or plan names either.
 price_re='\$[0-9]|[0-9]+(\.[0-9]+)? ?(USD|JPY)|¥|￥|円'
 plan_re='BASIC|INVESTOR|DEVELOPER'
@@ -94,8 +94,8 @@ while IFS= read -r s; do
   if grep -nHwE "$plan_re" "$s"; then
     err "$s contains a plan name (BASIC/INVESTOR/DEVELOPER)"
   fi
-done < <(find skills -name SKILL.md | sort)
-[ "$fail" -ne 0 ] || echo "ok   Claude description and skills have no prices or plan names"
+done < <(find skills -name SKILL.md | sort; echo README.md; echo SETUP.md)
+[ "$fail" -ne 0 ] || echo "ok   Claude description, skills, README and SETUP have no prices or plan names"
 
 # jq counts characters, not bytes, so this works in any locale.
 ja_len=$(jq "$oai.publication.translations[\"ja-JP\"].subtitle // \"\" | length" plugin.json)

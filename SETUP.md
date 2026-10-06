@@ -13,9 +13,9 @@ The summary:
 1. Run `/mcp` in Claude Code, select `kabuken`, and follow the browser
    sign-in prompt. Without the plugin, add the server first:
    `claude mcp add --transport http kabuken https://kabuken.intellics.ai/mcp`.
-2. No Kabuken account yet? Sign up free at
-   [kabuken.intellics.ai](https://kabuken.intellics.ai). A BASIC-tier
-   account is enough to complete sign-in and try the discovery tools.
+2. No Kabuken account yet? Sign up at
+   [kabuken.intellics.ai](https://kabuken.intellics.ai).
+   Some tools are available on paid plans. Plan details: https://kabuken.intellics.ai/pricing
 
 ## Option B: API key (fallback)
 
@@ -38,12 +38,8 @@ Use this if OAuth isn't available in your environment (e.g. headless CI).
 3. Upload the ZIP.
 4. Sign in with Google when ChatGPT asks you to connect Kabuken.
 
-## Tiers
+## Plans
 
-| Tier | Price | Daily call limit | Tool access |
-|---|---|---|---|
-| BASIC | Free | 50/day | 5 discovery/quota tools |
-| INVESTOR | ¥1,980/month or ¥19,800/year | 500/day | All 16 tools |
-| MCP DEVELOPER | ¥4,980/month | 1,000/day | All 16 tools |
+Some tools are available on paid plans. Plan details: https://kabuken.intellics.ai/pricing
 
 See the [README](./README.md) for the full tool list grouped by purpose.

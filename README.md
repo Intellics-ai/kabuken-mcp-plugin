@@ -13,8 +13,7 @@ remediation is in progress. Kabuken has no stock prices or market data, and
 no history before FY2025 — earlier years appear only as comparatives inside
 2025+ filings.
 
-Signup is required. A free BASIC tier is available; see [Tiers](#tiers)
-below.
+Signup is required. Some tools are available on paid plans. Plan details: https://kabuken.intellics.ai/pricing
 
 ## Install
 
@@ -77,13 +76,9 @@ Codex: `plugin.json` and `mcp.json` at the root. Claude Code reads
 **Account**
 - `get_account_quota` — caller's current daily quota usage, limit, and reset time; available to all tiers and does not itself consume quota
 
-## Tiers
+## Plans
 
-| Tier | Price | Daily call limit | Tool access |
-|---|---|---|---|
-| BASIC | Free | 50/day | 5 tools: `search_companies`, `get_company`, `list_industries`, `get_risk_context`, `get_account_quota` |
-| INVESTOR | ¥1,980/month or ¥19,800/year | 500/day | All 16 tools |
-| MCP DEVELOPER | ¥4,980/month | 1,000/day | All 16 tools |
+Some tools are available on paid plans. Plan details: https://kabuken.intellics.ai/pricing
 
 Get an account and a `kbk_` API key (or use OAuth) at
 [kabuken.intellics.ai](https://kabuken.intellics.ai). See
