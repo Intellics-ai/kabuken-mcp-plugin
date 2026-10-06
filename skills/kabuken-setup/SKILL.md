@@ -1,6 +1,6 @@
 ---
 name: kabuken-setup
-description: Guide the user through connecting the Kabuken MCP server, choosing between OAuth sign-in and an API key, and explaining what each subscription tier unlocks. Use when the user asks to set up, connect, authenticate, or troubleshoot the Kabuken MCP server.
+description: Guide the user through connecting the Kabuken MCP server in Claude Code, claude.ai, Claude Desktop or Claude mobile, choosing between OAuth sign-in and an API key. Use when the user asks to set up, connect, authenticate, or troubleshoot the Kabuken MCP server.
 ---
 
 # Kabuken MCP setup
@@ -10,27 +10,35 @@ server at `https://kabuken.intellics.ai/mcp`. This plugin already declares
 that server in `.mcp.json`, so once the plugin is enabled, Claude Code
 attempts to connect automatically.
 
-## Step 1: Check connection status
+If the user has no Kabuken account yet, direct them to
+`https://kabuken.intellics.ai` to sign up first.
+
+## Step 1: Check connection status (Claude Code)
 
 Run `/mcp` inside Claude Code. If `kabuken` shows `connected`, sign-in is
 already done and no further action is needed. If it shows `needs
 authentication`, continue to Step 2.
 
-## Step 2: Authenticate (OAuth, preferred)
+## Step 2: Authenticate with OAuth (preferred)
 
-Kabuken supports OAuth 2.0 Authorization Code with PKCE and is the preferred
-sign-in method — no key to copy or store.
+Kabuken supports OAuth 2.0 Authorization Code with PKCE. This is the
+preferred sign-in method: there is no key to copy or store.
 
-1. Run `/mcp` and select `kabuken`, then follow the browser prompt to sign
-   in. If the plugin is not enabled, add the server from the shell first:
+### Claude Code
+
+1. If the plugin is not enabled, add the server from the shell first:
    `claude mcp add --transport http kabuken https://kabuken.intellics.ai/mcp`.
-2. If the user has no Kabuken account yet, direct them to
-   `https://kabuken.intellics.ai` to sign up first — a BASIC-tier account is
-   free and is enough to complete OAuth and try the discovery tools.
-3. Tokens are stored securely by Claude Code and refreshed automatically.
+2. Run `/mcp`, select `kabuken`, and follow the browser prompt to sign in.
+3. Claude Code stores the tokens securely and refreshes them automatically.
    Use "Clear authentication" in the `/mcp` menu to revoke access.
 
-## Step 3: Authenticate with an API key (fallback)
+### claude.ai, Claude Desktop and Claude mobile
+
+1. Open Customize, then Connectors, then select Add custom connector.
+2. Enter the URL `https://kabuken.intellics.ai/mcp` and add the connector.
+3. Select Connect and sign in to Kabuken in the browser window.
+
+## Step 3: Authenticate with an API key (fallback, Claude Code only)
 
 Use this only if OAuth sign-in is unavailable in the user's environment
 (for example, a headless CI run with no browser and no interactive
@@ -46,19 +54,12 @@ terminal).
    ```
 3. Never print, log, or commit the key. Treat it like any other credential.
 
-## Step 4: Explain the tiers if asked
+## Step 4: Plans
 
-| Tier | Price | Daily call limit | Tools |
-|---|---|---|---|
-| BASIC | Free | 50/day | 5: `search_companies`, `get_company`, `list_industries`, `get_risk_context`, `get_account_quota` |
-| INVESTOR | ¥1,980/month (¥19,800/year) | 500/day | All 16 tools |
-| MCP DEVELOPER | ¥4,980/month | 1,000/day | All 16 tools |
+Some tools are available on paid plans. Plan details: https://kabuken.intellics.ai/pricing
 
-A BASIC account is free and sufficient to connect and explore company and
-industry discovery. Calling one of the other 11 tools on a BASIC account
-returns a message that the tool is available on other plans. This is
-expected, not an error. Tell the user which plan it needs and share
-`https://kabuken.intellics.ai/pricing` as plan details.
+If a tool returns a message that it is available on other plans, this is
+expected, not an error. Share the plan details link above.
 
 ## Step 5: Confirm
 
