@@ -76,6 +76,27 @@ if printf '%s\n' "$all_text" | grep -nwE 'BASIC|INVESTOR|DEVELOPER'; then
 fi
 [ "$fail" -ne 0 ] || echo "ok   listing text has no prices or plan names"
 
+# The Claude listing and every skill (packaged or not) must not contain prices
+# or plan names either.
+price_re='\$[0-9]|[0-9]+(\.[0-9]+)? ?(USD|JPY)|¥|￥|円'
+plan_re='BASIC|INVESTOR|DEVELOPER'
+claude_desc=$(jq -r '.description // empty' .claude-plugin/plugin.json)
+if printf '%s\n' "$claude_desc" | grep -nE "$price_re"; then
+  err ".claude-plugin/plugin.json description contains a price"
+fi
+if printf '%s\n' "$claude_desc" | grep -nwE "$plan_re"; then
+  err ".claude-plugin/plugin.json description contains a plan name (BASIC/INVESTOR/DEVELOPER)"
+fi
+while IFS= read -r s; do
+  if grep -nHE "$price_re" "$s"; then
+    err "$s contains a price"
+  fi
+  if grep -nHwE "$plan_re" "$s"; then
+    err "$s contains a plan name (BASIC/INVESTOR/DEVELOPER)"
+  fi
+done < <(find skills -name SKILL.md | sort)
+[ "$fail" -ne 0 ] || echo "ok   Claude description and skills have no prices or plan names"
+
 # jq counts characters, not bytes, so this works in any locale.
 ja_len=$(jq "$oai.publication.translations[\"ja-JP\"].subtitle // \"\" | length" plugin.json)
 [ "$ja_len" -le 30 ] || err "ja-JP subtitle is longer than 30 characters ($ja_len)"
