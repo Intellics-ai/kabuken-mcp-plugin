@@ -63,11 +63,15 @@ for k in test_credentials reviewer_instructions; do
 done
 
 # Listing text must not contain prices or plan names.
-listing=$(jq -r '.description, (.extensions["com.openai"] | .interface, .review, .publication | .. | strings)' plugin.json)
+# Review cases are reviewer-only and may quote filed yen amounts, so the price
+# check covers the listing (description, interface, publication) only. The
+# plan-name check also covers the review cases.
+listing=$(jq -r '.description, (.extensions["com.openai"] | .interface, .publication | .. | strings)' plugin.json)
+all_text=$(jq -r '.description, (.extensions["com.openai"] | .interface, .review, .publication | .. | strings)' plugin.json)
 if printf '%s\n' "$listing" | grep -nE '\$[0-9]|[0-9]+(\.[0-9]+)? ?(USD|JPY)|¥|￥|円'; then
   err "plugin.json listing text contains a price"
 fi
-if printf '%s\n' "$listing" | grep -nwE 'BASIC|INVESTOR|DEVELOPER'; then
+if printf '%s\n' "$all_text" | grep -nwE 'BASIC|INVESTOR|DEVELOPER'; then
   err "plugin.json listing text contains a plan name (BASIC/INVESTOR/DEVELOPER)"
 fi
 [ "$fail" -ne 0 ] || echo "ok   listing text has no prices or plan names"
