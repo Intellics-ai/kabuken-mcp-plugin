@@ -1,7 +1,8 @@
 {
   "name": "kabuken",
+  "displayName": "Kabuken",
   "description": "Financial data from Japanese listed companies' official EDINET filings: financial statements, segment data and major shareholders, with bilingual EN/JA labels and the source filing for each figure. No stock prices or investment advice. Sign-in required.",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "author": {
     "name": "Intellics K.K.",
     "url": "https://kabuken.intellics.ai"
@@ -16,5 +17,9 @@
     "xbrl",
     "finance",
     "mcp"
-  ]
+  ],
+  "icon": "./assets/icon.png",
+  "supportUrl": "https://kabuken.intellics.ai/support",
+  "privacyPolicyUrl": "https://kabuken.intellics.ai/privacy",
+  "termsOfServiceUrl": "https://kabuken.intellics.ai/terms"
 }
