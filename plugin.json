@@ -16,7 +16,9 @@
     "edinet",
     "xbrl",
     "filings",
-    "finance"
+    "finance",
+    "edinet-mcp",
+    "financial-statements"
   ],
   "extensions": {
     "com.openai": {

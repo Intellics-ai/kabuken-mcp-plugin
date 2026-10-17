@@ -16,7 +16,9 @@
     "edinet",
     "xbrl",
     "finance",
-    "mcp"
+    "mcp",
+    "edinet-mcp",
+    "financial-statements"
   ],
   "icon": "./assets/icon.png",
   "supportUrl": "https://kabuken.intellics.ai/support",

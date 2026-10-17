@@ -1,10 +1,20 @@
-# Kabuken MCP plugin
+# Kabuken — EDINET MCP server for Claude and ChatGPT
 
-Kabuken is an MCP server that gives Claude and other MCP clients direct
-access to Japanese statutory filings on EDINET. It returns individual XBRL
-facts with bilingual (English/Japanese) taxonomy labels, calculation-linkbase
-trees, and segment breakdowns, all traceable to the filing they came from —
+Kabuken is an EDINET MCP server. It gives Claude, ChatGPT and other MCP
+clients the financial statements, segment breakdowns and major shareholders
+of Japanese listed companies, taken from their official EDINET filings. Each
+figure comes with its source filing and its period. Connect your client to
+`https://kabuken.intellics.ai/mcp`. Kabuken returns individual XBRL facts
+with English and Japanese taxonomy labels and calculation-linkbase trees,
 not a flattened summary table.
+
+KabukenはEDINET MCPサーバーです。Claude、ChatGPTなどのMCPクライアントから、
+日本の上場企業がEDINETに提出した書類の財務諸表、セグメント情報、大株主を
+取得できます。各数値には出典となる提出書類と対象期間を示します。接続先は
+`https://kabuken.intellics.ai/mcp` です。株価や投資助言は提供しません。
+
+EDINET MCP guide: [English](https://kabuken.intellics.ai/docs/en/edinet-mcp/) ·
+[日本語](https://kabuken.intellics.ai/docs/ja/edinet-mcp/)
 
 **Coverage, as of 2026-09-21**: 99 of 99 currently-tracked TOPIX-100
 constituents, 1,967 filings, fully extracted with zero missing facts on the
@@ -14,6 +24,25 @@ no history before FY2025 — earlier years appear only as comparatives inside
 2025+ filings.
 
 Signup is required. Some tools are available on paid plans. Plan details: https://kabuken.intellics.ai/pricing
+
+## How Kabuken differs from other EDINET MCP servers
+
+- **Source filing and period with each figure.** Every value names the
+  EDINET filing it comes from and the period it covers, so you can check it
+  against the original document.
+- **Calculation trees.** `get_calculation_tree` returns the XBRL calculation
+  linkbase of a filing as a tree, so you can see how a total breaks down into
+  its components and their weights.
+- **Segment breakdowns.** `get_segment_breakdown` returns business,
+  geographic and consolidation-scope figures by dimension axis and member.
+- **Major shareholders.** `get_major_shareholders` returns holders, holding
+  ratios and reporting dates from large-shareholding reports (大量保有報告書).
+- **OAuth for Claude and ChatGPT.** Claude and ChatGPT connect with OAuth
+  sign-in; no API key to copy. An API key is also available for other
+  clients.
+- **Skill pack.** This repository is a plugin for Claude Code and a plugin
+  package for ChatGPT and Codex, with skills and slash commands for common
+  tasks (company snapshot, peer comparison, segment breakdown).
 
 ## Install
 
