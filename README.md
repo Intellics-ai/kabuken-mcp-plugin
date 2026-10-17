@@ -16,13 +16,6 @@ KabukenはEDINET MCPサーバーです。Claude、ChatGPTなどのMCPクライ�
 EDINET MCP guide: [English](https://kabuken.intellics.ai/docs/en/edinet-mcp/) ·
 [日本語](https://kabuken.intellics.ai/docs/ja/edinet-mcp/)
 
-**Coverage, as of 2026-09-21**: 99 of 99 currently-tracked TOPIX-100
-constituents, 1,967 filings, fully extracted with zero missing facts on the
-current read path. Coverage beyond this set is broader but partial, and
-remediation is in progress. Kabuken has no stock prices or market data, and
-no history before FY2025 — earlier years appear only as comparatives inside
-2025+ filings.
-
 Signup is required. Some tools are available on paid plans. Plan details: https://kabuken.intellics.ai/pricing
 
 ## How Kabuken differs from other EDINET MCP servers
