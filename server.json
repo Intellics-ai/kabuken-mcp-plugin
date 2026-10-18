@@ -8,7 +8,7 @@
     "source": "github",
     "id": "1383159624"
   },
-  "version": "2.1.3",
+  "version": "2.1.4",
   "websiteUrl": "https://kabuken.intellics.ai",
   "remotes": [
     {
@@ -27,11 +27,6 @@
           "protected_resource_metadata": "https://kabuken.intellics.ai/.well-known/oauth-protected-resource/mcp",
           "discovery": "https://kabuken.intellics.ai/.well-known/oauth-authorization-server/mcp"
         }
-      },
-      "coverage": {
-        "validated": "99 of 99 currently-tracked TOPIX-100 constituents, 1,967 filings, zero missing facts (measured 2026-09-21)",
-        "broader_coverage": "in progress, partial outside the validated set",
-        "excludes": "stock prices and market data"
       },
       "signupRequired": true,
       "install": "claude mcp add --transport http kabuken https://kabuken.intellics.ai/mcp"

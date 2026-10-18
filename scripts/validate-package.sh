@@ -97,6 +97,16 @@ while IFS= read -r s; do
 done < <(find skills -name SKILL.md | sort; echo README.md; echo SETUP.md)
 [ "$fail" -ne 0 ] || echo "ok   Claude description, skills, README and SETUP have no prices or plan names"
 
+# Public listing text must not state coverage counts or data status (owner rule
+# 2026-10-13). server.json is imported by the MCP Registry and directories.
+status_re='[0-9][0-9,]* of [0-9][0-9,]*|in progress|partial(ly)? (outside|coverage|data|set)|missing facts|remediation|recovery'
+for f in server.json README.md; do
+  if grep -niE "$status_re" "$f"; then
+    err "$f contains a coverage count or data-status claim"
+  fi
+done
+[ "$fail" -ne 0 ] || echo "ok   server.json and README have no coverage counts or status claims"
+
 # jq counts characters, not bytes, so this works in any locale.
 ja_len=$(jq "$oai.publication.translations[\"ja-JP\"].subtitle // \"\" | length" plugin.json)
 [ "$ja_len" -le 30 ] || err "ja-JP subtitle is longer than 30 characters ($ja_len)"
