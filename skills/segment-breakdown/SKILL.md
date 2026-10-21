@@ -14,9 +14,11 @@ argument).
    `search_companies` with `query` for a name, or `get_company` with `id`
    and `id_type: "ticker"` for a ticker. If a name is ambiguous, ask the
    user to pick one.
-2. Call `list_documents` with `entity_code` to list the filings. If the
-   user named a period, pick the matching filing. Otherwise use the most
-   recent annual securities report (有価証券報告書). Note its `doc_id`.
+2. Call `list_documents` with `entity_code` to list the filings. The
+   filings are in `documents`; if `truncated` is true, call again with a
+   higher `limit` (up to 100). If the user named a period, pick the
+   matching filing. Otherwise use the most recent annual securities
+   report (有価証券報告書). Note its `doc_id`.
 3. Call `get_segment_breakdown` with that `doc_id` (optional `fact_name`
    to filter to one axis, optional `limit`, default 100). If a tool
    says it is available on other plans, tell the user which plan it needs
