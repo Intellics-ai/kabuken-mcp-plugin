@@ -6,17 +6,19 @@ description: Look up a Japanese listed company in Kabuken and get figures from i
 # Get started with Kabuken
 
 1. Call `search_companies` with `query` set to the company name (English or
-   Japanese). Note the company's EDINET entity code (for example `E02144`
-   for Toyota). If several companies match, ask the user to pick one.
+   Japanese). Matches are in `companies`. Note the company's EDINET entity
+   code (`company_entity_code`, for example `E02144` for Toyota). If
+   several companies match, ask the user to pick one.
 2. Call `get_company_financials` with `entity_code` for revenue, profit,
    assets, equity and cash flow from recent annual reports.
 3. For other questions, use the entity code with:
-   - `list_documents` (`entity_code`) to find a filing and its `doc_id`;
+   - `list_documents` (`entity_code`) to find a filing and its `doc_id`
+     in `documents`;
    - `get_segment_breakdown` (`doc_id`) for figures by segment or region;
    - `compare_companies` (`entity_codes`, 2 to 5 codes) for peers.
 4. State the period and the source filing for every figure.
 5. Kabuken has no stock prices and gives no investment advice. Do not add
    a price, market cap or valuation ratio.
-6. If a tool says it is available on other plans, tell the user which plan
-   it needs and share https://kabuken.intellics.ai/pricing as plan details.
-   Do not estimate the figure.
+6. If a tool says a feature is not available for this account, tell the
+   user that plainly and continue with the tools that work. Do not suggest
+   plans, prices or links. Do not estimate the figure.

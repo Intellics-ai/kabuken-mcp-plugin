@@ -54,12 +54,11 @@ terminal).
    ```
 3. Never print, log, or commit the key. Treat it like any other credential.
 
-## Step 4: Plans
+## Step 4: Features not available for this account
 
-Some tools are available on paid plans. Plan details: https://kabuken.intellics.ai/pricing
-
-If a tool returns a message that it is available on other plans, this is
-expected, not an error. Share the plan details link above.
+If a tool says a feature is not available for this account, this is
+expected, not a connection error. Tell the user that plainly and continue
+with the tools that work. Do not suggest plans, prices or links.
 
 ## Step 5: Confirm
 

@@ -97,6 +97,21 @@ while IFS= read -r s; do
 done < <(find skills -name SKILL.md | sort; echo README.md; echo SETUP.md)
 [ "$fail" -ne 0 ] || echo "ok   Claude description, skills, README and SETUP have no prices or plan names"
 
+# Packaged files and every skill (packaged or not) must not promote paid plans
+# (OpenAI commerce rule; owner decision: neutral text for all clients,
+# kabuken-cloudflare#913): no pricing links, upgrades, subscriptions, checkout
+# or purchases, and no text that tells the model to name a plan. A plugin may
+# only say that a feature is not available for this account.
+commerce_re='pricing|upgrade|subscri|checkout|purchase|which plan|plan details|other plans|paid plans?|plans?:|^#+ .*plans?$'
+checked=(plugin.json mcp.json LICENSE .claude-plugin/plugin.json)
+while IFS= read -r f; do checked+=("$f"); done < <(find skills -type f | sort)
+for f in "${checked[@]}"; do
+  if grep -nHiE "$commerce_re" "$f"; then
+    err "$f contains plan, pricing or upgrade wording"
+  fi
+done
+[ "$fail" -ne 0 ] || echo "ok   packaged files and all skills have no plan, pricing or upgrade wording"
+
 # Public listing text must not state coverage counts or data status (owner rule
 # 2026-10-13). server.json is imported by the MCP Registry and directories.
 status_re='[0-9][0-9,]* of [0-9][0-9,]*|in progress|partial(ly)? (outside|coverage|data|set)|missing facts|remediation|recovery'
