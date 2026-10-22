@@ -17,9 +17,9 @@ Input: one company name, ticker, or EDINET entity code, given by the user
      `entity_code`).
 2. Call `get_company_financials` with `entity_code` (optional
    `period_type`: `ANNUAL` default, `INTERIM` or `ALL`; optional `periods`,
-   default 3). If a tool says it is available on other plans, tell the
-   user which plan it needs and share https://kabuken.intellics.ai/pricing
-   as plan details, then stop. Do not guess figures.
+   default 3). If a tool says a feature is not available for this account,
+   tell the user that plainly and continue with the tools that work. Do
+   not suggest plans, prices or links. Do not guess figures.
 3. Call `get_risk_context` with `entity_code` for BOJ rate-sensitivity and
    METI export-control notes.
 4. Present a short snapshot: company name (EN/JA), industry, and for the

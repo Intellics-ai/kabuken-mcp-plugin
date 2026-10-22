@@ -19,6 +19,6 @@ description: Look up a Japanese listed company in Kabuken and get figures from i
 4. State the period and the source filing for every figure.
 5. Kabuken has no stock prices and gives no investment advice. Do not add
    a price, market cap or valuation ratio.
-6. If a tool says it is available on other plans, tell the user which plan
-   it needs and share https://kabuken.intellics.ai/pricing as plan details.
-   Do not estimate the figure.
+6. If a tool says a feature is not available for this account, tell the
+   user that plainly and continue with the tools that work. Do not suggest
+   plans, prices or links. Do not estimate the figure.
