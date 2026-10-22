@@ -97,6 +97,23 @@ while IFS= read -r s; do
 done < <(find skills -name SKILL.md | sort; echo README.md; echo SETUP.md)
 [ "$fail" -ne 0 ] || echo "ok   Claude description, skills, README and SETUP have no prices or plan names"
 
+# Packaged files must not promote paid plans (OpenAI commerce rule, kabuken-cloudflare#913):
+# no pricing links, upgrades, subscriptions, checkout or purchases, and no text
+# that tells the model to name a plan. A plugin may only say that a feature is
+# not available for this account. The file list matches scripts/build-package.sh.
+commerce_re='pricing|upgrade|subscri|checkout|purchase|which plan|plan details|other plans|paid plans?'
+packaged=(plugin.json mcp.json LICENSE)
+for d in skills/*/; do
+  [ "$(basename "$d")" = "kabuken-setup" ] && continue
+  while IFS= read -r f; do packaged+=("$f"); done < <(find "$d" -type f | sort)
+done
+for f in "${packaged[@]}"; do
+  if grep -nHiE "$commerce_re" "$f"; then
+    err "$f (packaged) contains plan, pricing or upgrade wording"
+  fi
+done
+[ "$fail" -ne 0 ] || echo "ok   packaged files have no plan, pricing or upgrade wording"
+
 # Public listing text must not state coverage counts or data status (owner rule
 # 2026-10-13). server.json is imported by the MCP Registry and directories.
 status_re='[0-9][0-9,]* of [0-9][0-9,]*|in progress|partial(ly)? (outside|coverage|data|set)|missing facts|remediation|recovery'
