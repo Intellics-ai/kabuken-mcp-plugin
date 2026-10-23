@@ -97,20 +97,23 @@ while IFS= read -r s; do
 done < <(find skills -name SKILL.md | sort; echo README.md; echo SETUP.md)
 [ "$fail" -ne 0 ] || echo "ok   Claude description, skills, README and SETUP have no prices or plan names"
 
-# Packaged files and every skill (packaged or not) must not promote paid plans
-# (OpenAI commerce rule; owner decision: neutral text for all clients,
-# kabuken-cloudflare#913): no pricing links, upgrades, subscriptions, checkout
-# or purchases, and no text that tells the model to name a plan. A plugin may
-# only say that a feature is not available for this account.
-commerce_re='pricing|upgrade|subscri|checkout|purchase|which plan|plan details|other plans|paid plans?|plans?:|^#+ .*plans?$'
-checked=(plugin.json mcp.json LICENSE .claude-plugin/plugin.json)
+# Packaged files, every skill (packaged or not) and README.md must not promote
+# paid plans (OpenAI commerce rule; neutral text for all clients): no pricing
+# links, upgrades, subscriptions, checkout or purchases, and no text that tells
+# the model to name a plan. A plugin may only say that a feature is not
+# available for this account. The patterns name commerce contexts only, so
+# filing terms such as "medium-term plan", "transfer pricing", "purchase of
+# treasury stock", "subscription rights", 電気料金, 課金収入 or 有料老人ホーム
+# pass. scripts/tests/run-tests.sh checks both sides.
+commerce_re='/pricing|pricing (page|plans?|details|tiers?)|upgrade (your|to (a |the )?(paid|higher|premium|pro)|now)|upgrade (plan|tier|account)|subscribe (to|for) (a |the |this )?(plan|kabuken|tier|service)|subscription (plans?|tiers?)|checkout|purchase (a |an |the |this |your )?(plan|subscription|licen[cs]e|upgrade|tier)|which plan (you|they|the user|is|are|to)|plan details:|(see|view|compare) (other |our )?plans|(paid|premium|free|pro) plans?|^#+ *(plans|pricing|plans (and|&) pricing) *$|(有料|料金|上位|有償|課金)プラン|プラン(の詳細|一覧|変更|を変更)|有料(版|会員|機能)|アップグレード'
+checked=(plugin.json mcp.json LICENSE .claude-plugin/plugin.json README.md)
 while IFS= read -r f; do checked+=("$f"); done < <(find skills -type f | sort)
 for f in "${checked[@]}"; do
   if grep -nHiE "$commerce_re" "$f"; then
     err "$f contains plan, pricing or upgrade wording"
   fi
 done
-[ "$fail" -ne 0 ] || echo "ok   packaged files and all skills have no plan, pricing or upgrade wording"
+[ "$fail" -ne 0 ] || echo "ok   packaged files, all skills and README have no plan, pricing or upgrade wording"
 
 # Public listing text must not state coverage counts or data status (owner rule
 # 2026-10-13). server.json is imported by the MCP Registry and directories.
@@ -137,6 +140,13 @@ elif [ "$v_root" = "$v_claude" ] && [ "$v_root" = "$v_server" ]; then
 else
   err "version mismatch: plugin.json $v_root, .claude-plugin/plugin.json $v_claude, server.json $v_server (all three must be identical)"
 fi
+
+# Release notes must describe this version.
+release_notes=$(jq -r "$oai.publication.release_notes // empty" plugin.json)
+case "$release_notes" in
+  "Kabuken $v_root: "*) echo "ok   release_notes start with \"Kabuken $v_root:\"" ;;
+  *) err "release_notes must start with \"Kabuken $v_root:\", found: ${release_notes:0:40}" ;;
+esac
 
 for s in skills/*/SKILL.md; do
   dir=$(basename "$(dirname "$s")")
