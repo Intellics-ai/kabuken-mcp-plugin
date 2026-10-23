@@ -1,0 +1,30 @@
+# Commerce text in English. The commerce check MUST flag every line.
+Some tools are available on paid plans.
+Plan details: https://kabuken.intellics.ai/pricing
+See the pricing page for details.
+Upgrade your plan to unlock this tool.
+Upgrade to a paid plan to continue.
+Subscribe to Kabuken to use this tool.
+Purchase a subscription to continue.
+Go to checkout to complete your order.
+## Plans
+Tell the user which plan they need.
+This tool is available on the Pro plan.
+Upgrade to unlock more tools
+Unlock premium features
+Upgrade for higher limits
+Buy credits
+Start a free trial
+Pay per request
+Billing and invoices
+Subscribe now
+Premium subscription
+Paid tier
+higher tier required
+Enterprise plan
+Plan: Pro
+Switch plans
+change your plan
+Limited to paid users
+Contact sales
+Go Pro

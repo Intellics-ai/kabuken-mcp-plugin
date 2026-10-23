@@ -17,7 +17,8 @@ KabukenはEDINET MCPサーバーです。Claude、ChatGPTなどのMCPクライ�
 EDINET MCP guide: [English](https://kabuken.intellics.ai/docs/en/edinet-mcp/) ·
 [日本語](https://kabuken.intellics.ai/docs/ja/edinet-mcp/)
 
-Signup is required. Some tools are available on paid plans. Plan details: https://kabuken.intellics.ai/pricing
+Signup is required. Get an account and a `kbk_` API key (or use OAuth) at
+[kabuken.intellics.ai](https://kabuken.intellics.ai).
 
 ## How Kabuken differs from other EDINET MCP servers
 
@@ -67,7 +68,7 @@ Codex: `plugin.json` and `mcp.json` at the root. Claude Code reads
 
 ## Tools
 
-16 read-only tools, grouped by purpose. None write or modify data.
+Read-only tools, grouped by purpose. None write or modify data.
 
 **Company and industry discovery**
 - `search_companies` — search Japanese listed companies by name (EN or JA, partial match)
@@ -97,11 +98,9 @@ Codex: `plugin.json` and `mcp.json` at the root. Claude Code reads
 - `analyze_document` — free-text Q&A grounded in a specific filing
 
 **Account**
-- `get_account_quota` — caller's current daily quota usage, limit, and reset time; available to all tiers and does not itself consume quota
+- `get_account_quota` — caller's current daily quota usage, limit, and reset time; does not itself consume quota
 
-## Plans
-
-Some tools are available on paid plans. Plan details: https://kabuken.intellics.ai/pricing
+## Account
 
 Get an account and a `kbk_` API key (or use OAuth) at
 [kabuken.intellics.ai](https://kabuken.intellics.ai). See
@@ -148,8 +147,10 @@ https://kabuken.intellics.ai/docs
 
 `scripts/build-package.sh` builds `dist/kabuken-plugin-<version>.zip` with
 `plugin.json` at the ZIP root, plus `mcp.json`, `skills/` (without the
-Claude Code-only `kabuken-setup` skill), `assets/`, `LICENSE` and
-`README.md`. `scripts/validate-package.sh` checks the manifests and skills.
+Claude Code-only `kabuken-setup` skill), `assets/` and `LICENSE`.
+`README.md` is not packaged. `scripts/validate-package.sh` checks the
+manifests, skills and README, and `scripts/tests/run-tests.sh` tests those
+checks.
 The `Plugin package` workflow runs both on every pull request and push to
 `main`, and attaches the ZIP to a GitHub release when a `v*` tag is pushed.
 The tag must match the `version` in `plugin.json`.

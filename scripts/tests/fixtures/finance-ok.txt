@@ -1,0 +1,34 @@
+# Legitimate filing text. The commerce check must NOT flag any line.
+Medium-term plan: revenue of 1.2 trillion yen by fiscal 2028.
+## Business plan
+## Medium-term management plan
+Pricing power improved as raw material costs fell.
+Transfer pricing adjustments increased income taxes.
+Purchase price allocation was completed in the fourth quarter.
+Purchase of treasury stock
+Proceeds from purchase of treasury shares were nil.
+Subscription rights to shares (新株予約権) were exercised.
+The subscription price per share was set by the board.
+Defined benefit plan details are in Note 12.
+Contributions to other plans were not material.
+中期経営プラン「Vision 2030」を公表しました。
+電気料金の値上げにより売上高が増加しました。
+ゲーム事業の課金収入が増加しました。
+有料老人ホームの入居率が改善しました。
+upgrade to the higher rating
+upgrade to premium segment
+checkout counter sales
+which plan to adopt
+insurance premium
+dividends paid
+premium on bonds
+free cash flow
+/pricing-model
+the company's free plan for employees
+システムのアップグレード
+アップグレード投資
+プライム市場への市場区分変更
+課金収入
+電気料金
+有料老人ホーム
+保険料

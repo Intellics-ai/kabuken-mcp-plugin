@@ -7,8 +7,7 @@
 #   .claude-plugin/, .mcp.json   Claude Code files. OpenAI reads mcp.json;
 #                                .mcp.json uses Claude's "type": "http".
 #   skills/kabuken-setup/        Claude Code setup steps (/mcp, claude mcp add).
-#   README.md                    GitHub page only; it lists plan prices, which
-#                                OpenAI does not allow in listing context.
+#   README.md                    GitHub page only; not part of the listing.
 #   server.json, SETUP.md, .github/, scripts/
 set -euo pipefail
 
