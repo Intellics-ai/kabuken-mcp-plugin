@@ -21,6 +21,9 @@ jobs:
       - name: Validate manifests and skills
         run: bash scripts/validate-package.sh
 
+      - name: Test package validation
+        run: bash scripts/tests/run-tests.sh
+
       - name: Read version
         id: version
         run: echo "version=$(jq -r '.version' plugin.json)" >> "$GITHUB_OUTPUT"
