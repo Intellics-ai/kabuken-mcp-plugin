@@ -56,7 +56,9 @@ rm -rf "$dir"
 dir=$(copy_repo)
 jq '.extensions["com.openai"].publication.release_notes = "Kabuken 0.0.1: old notes."' plugin.json > "$dir/plugin.json"
 out=$(bash "$dir/scripts/validate-package.sh" 2>&1)
-if [ $? -ne 0 ] && printf '%s\n' "$out" | grep -q 'release_notes'; then
+rc=$?
+v=$(jq -r '.version' plugin.json)
+if [ "$rc" -ne 0 ] && printf '%s\n' "$out" | grep -qxF "ERROR: release_notes must start with \"Kabuken $v:\", found: Kabuken 0.0.1: old notes."; then
   pass "release_notes for another version fail validation"
 else
   fail "release_notes for another version pass validation"
