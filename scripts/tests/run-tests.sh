@@ -52,6 +52,17 @@ else
 fi
 rm -rf "$dir"
 
+# 3b. SETUP.md with plan wording must fail validation.
+dir=$(copy_repo)
+cp "$fixtures/setup-paid-plans.md" "$dir/SETUP.md"
+out=$(bash "$dir/scripts/validate-package.sh" 2>&1)
+if [ $? -ne 0 ] && printf '%s\n' "$out" | grep -q 'SETUP.md contains plan, pricing or upgrade wording'; then
+  pass "SETUP.md with paid-plan wording fails validation"
+else
+  fail "SETUP.md with paid-plan wording passes validation"
+fi
+rm -rf "$dir"
+
 # 4. release_notes that name another version must fail validation.
 dir=$(copy_repo)
 jq '.extensions["com.openai"].publication.release_notes = "Kabuken 0.0.1: old notes."' plugin.json > "$dir/plugin.json"
