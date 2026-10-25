@@ -15,7 +15,6 @@ The summary:
    `claude mcp add --transport http kabuken https://kabuken.intellics.ai/mcp`.
 2. No Kabuken account yet? Sign up at
    [kabuken.intellics.ai](https://kabuken.intellics.ai).
-   Some tools are available on paid plans. Plan details: https://kabuken.intellics.ai/pricing
 
 ## Option B: API key (fallback)
 
@@ -37,9 +36,5 @@ Use this if OAuth isn't available in your environment (e.g. headless CI).
    **Create custom MCP server**.
 3. Upload the ZIP.
 4. Sign in with Google when ChatGPT asks you to connect Kabuken.
-
-## Plans
-
-Some tools are available on paid plans. Plan details: https://kabuken.intellics.ai/pricing
 
 See the [README](./README.md) for the full tool list grouped by purpose.

@@ -149,7 +149,7 @@ https://kabuken.intellics.ai/docs
 `plugin.json` at the ZIP root, plus `mcp.json`, `skills/` (without the
 Claude Code-only `kabuken-setup` skill), `assets/` and `LICENSE`.
 `README.md` is not packaged. `scripts/validate-package.sh` checks the
-manifests, skills and README, and `scripts/tests/run-tests.sh` tests those
+manifests, skills, README and SETUP.md, and `scripts/tests/run-tests.sh` tests those
 checks.
 The `Plugin package` workflow runs both on every pull request and push to
 `main`, and attaches the ZIP to a GitHub release when a `v*` tag is pushed.

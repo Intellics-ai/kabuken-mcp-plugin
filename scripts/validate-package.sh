@@ -97,7 +97,7 @@ while IFS= read -r s; do
 done < <(find skills -name SKILL.md | sort; echo README.md; echo SETUP.md)
 [ "$fail" -ne 0 ] || echo "ok   Claude description, skills, README and SETUP have no prices or plan names"
 
-# Packaged files, every skill (packaged or not) and README.md must not promote
+# Packaged files, every skill (packaged or not), README.md and SETUP.md must not promote
 # paid plans (OpenAI commerce rule; neutral text for all clients): no pricing
 # links, upgrades, subscriptions, checkout or purchases, and no text that tells
 # the model to name a plan. A plugin may only say that a feature is not
@@ -108,14 +108,14 @@ done < <(find skills -name SKILL.md | sort; echo README.md; echo SETUP.md)
 # This is a best-effort net for plugin, skill and README text, not a full
 # commerce classifier; scripts/tests/fixtures lists the sentences it covers.
 commerce_re='/pricing([^-a-z]|$)|pricing (page|plans?|details|tiers?)|upgrade (your|now|for (higher|more)|to (a )?(paid|pro)( plan| tier)?([^a-z]|$))|upgrade (plan|tier|account)|unlock|buy credits?|free trial|pay per (request|call|use|query)|billing|subscribe (now|(to|for) (a |the |this )?(plan|kabuken|tier|service))|subscription (plans?|tiers?)|premium (subscription|members?(hip)?|accounts?|features?|tiers?|plans?)|(paid|premium|pro|higher|enterprise) tiers?|tier required|(paid|premium|pro|enterprise) plans?|plan: *(pro|free|basic|premium|paid|enterprise)|(switch|change) plans|(switch|change|upgrade) your plan|paid (users|accounts|members|customers|subscribers)|contact (our )?sales|go pro([^a-z]|$)|(go to|proceed to|complete) (the )?checkout|checkout (page|link|session)|purchase (a |an |the |this |your )?(plan|subscription|licen[cs]e|upgrade|tier|credits?)|which plan (you|they|the user|is|are)|plan details:|(see|view|compare) (other |our )?plans|^#+ *(plans|pricing|plans (and|&) pricing) *$|(有料|料金|上位|有償|課金|プレミアム)プラン|プラン(の詳細|一覧|変更|を変更)|有料(版|会員|機能)|プレミアム会員|アップグレード(してください|が必要|すると|して利用)|月額|無料トライアル|ご購入|購入はこちら|お支払い|ティア'
-checked=(plugin.json mcp.json LICENSE .claude-plugin/plugin.json README.md)
+checked=(plugin.json mcp.json LICENSE .claude-plugin/plugin.json README.md SETUP.md)
 while IFS= read -r f; do checked+=("$f"); done < <(find skills -type f | sort)
 for f in "${checked[@]}"; do
   if grep -nHiE "$commerce_re" "$f"; then
     err "$f contains plan, pricing or upgrade wording"
   fi
 done
-[ "$fail" -ne 0 ] || echo "ok   packaged files, all skills and README have no plan, pricing or upgrade wording"
+[ "$fail" -ne 0 ] || echo "ok   packaged files, all skills, README and SETUP have no plan, pricing or upgrade wording"
 
 # Public listing text must not state coverage counts or data status (owner rule
 # 2026-10-13). server.json is imported by the MCP Registry and directories.
