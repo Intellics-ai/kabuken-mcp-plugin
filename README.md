@@ -5,9 +5,8 @@ clients the financial statements, segment breakdowns and major shareholders
 of Japanese listed companies, taken from their official EDINET filings. Each
 figure comes with its source filing and its period. Connect your client to
 `https://kabuken.intellics.ai/mcp`. Kabuken returns individual XBRL facts
-with English and Japanese taxonomy labels and calculation-linkbase trees,
-not a flattened summary table. Kabuken does not provide stock prices or
-investment advice.
+with English and Japanese taxonomy labels and calculation-linkbase trees.
+Kabuken does not provide stock prices or investment advice.
 
 KabukenはEDINET MCPサーバーです。Claude、ChatGPTなどのMCPクライアントから、
 日本の上場企業がEDINETに提出した書類の財務諸表、セグメント情報、大株主を
