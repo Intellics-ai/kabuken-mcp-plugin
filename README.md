@@ -5,9 +5,8 @@ clients the financial statements, segment breakdowns and major shareholders
 of Japanese listed companies, taken from their official EDINET filings. Each
 figure comes with its source filing and its period. Connect your client to
 `https://kabuken.intellics.ai/mcp`. Kabuken returns individual XBRL facts
-with English and Japanese taxonomy labels and calculation-linkbase trees,
-not a flattened summary table. Kabuken does not provide stock prices or
-investment advice.
+with English and Japanese taxonomy labels and calculation-linkbase trees.
+Kabuken does not provide stock prices or investment advice.
 
 KabukenはEDINET MCPサーバーです。Claude、ChatGPTなどのMCPクライアントから、
 日本の上場企業がEDINETに提出した書類の財務諸表、セグメント情報、大株主を
@@ -20,9 +19,9 @@ EDINET MCP guide: [English](https://kabuken.intellics.ai/docs/en/edinet-mcp/) ·
 Signup is required. Get an account and a `kbk_` API key (or use OAuth) at
 [kabuken.intellics.ai](https://kabuken.intellics.ai).
 
-## How Kabuken differs from other EDINET MCP servers
+## What Kabuken provides
 
-- **Source filing and period with each figure.** Every value names the
+- **Source filing and period with each figure.** Each value names the
   EDINET filing it comes from and the period it covers, so you can check it
   against the original document.
 - **Calculation trees.** `get_calculation_tree` returns the XBRL calculation
@@ -32,12 +31,12 @@ Signup is required. Get an account and a `kbk_` API key (or use OAuth) at
   geographic and consolidation-scope figures by dimension axis and member.
 - **Major shareholders.** `get_major_shareholders` returns holders, holding
   ratios and reporting dates from large-shareholding reports (大量保有報告書).
-- **OAuth for Claude and ChatGPT.** Claude and ChatGPT connect with OAuth
-  sign-in; no API key to copy. An API key is also available for other
-  clients.
+- **OAuth sign-in for Claude and ChatGPT.** Claude and ChatGPT connect with
+  OAuth sign-in, with no API key to copy. MCP clients without OAuth can
+  connect with an API key.
 - **Skill pack.** This repository is a plugin for Claude Code and a plugin
-  package for ChatGPT and Codex, with skills and slash commands for common
-  tasks (company snapshot, peer comparison, segment breakdown).
+  package for ChatGPT and Codex, with skills for common tasks (company
+  snapshot, peer comparison, segment breakdown).
 
 ## Install
 
