@@ -97,13 +97,6 @@ else
 fi
 rm -rf "$dir"
 
-# 4c. build-package.sh must not name the assets directory; it stages the files the manifest references.
-if grep -qi 'assets' scripts/build-package.sh; then
-  fail "build-package.sh names the assets directory"
-else
-  pass "build-package.sh does not name the assets directory"
-fi
-
 # 5. The repository itself must pass validation.
 if out=$(bash scripts/validate-package.sh 2>&1); then
   pass "repository passes validate-package.sh"

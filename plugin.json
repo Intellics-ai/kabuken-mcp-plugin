@@ -110,7 +110,7 @@
       },
       "publication": {
         "countries": [],
-        "release_notes": "Kabuken 2.1.7: simpler package layout and description updates. Kabuken lets you look up Japanese listed companies and read financial statements, segment data and major shareholders from their official EDINET filings, with the source filing for each figure.",
+        "release_notes": "Kabuken 2.1.7: description updates. Kabuken lets you look up Japanese listed companies and read financial statements, segment data and major shareholders from their official EDINET filings, with the source filing for each figure.",
         "translations": {
           "ja-JP": {
             "subtitle": "日本の上場企業の開示データ",
