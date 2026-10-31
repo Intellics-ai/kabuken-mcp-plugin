@@ -18,7 +18,7 @@
   ],
   "_meta": {
     "io.modelcontextprotocol.registry/publisher-provided": {
-      "description_ja": "EDINET開示書類のXBRLデータを、ファクト単位でAIクライアントに提供。日英バイリンガルラベル、財務データ、スクリーニング。株価は含みません。利用にはサインアップが必要です。",
+      "description_ja": "EDINET開示書類のXBRLデータを、ファクト単位でAIクライアントに提供。財務データ、スクリーニング。株価は含みません。利用にはサインアップが必要です。",
       "categories": ["finance", "data"],
       "auth": {
         "type": "bearer",
