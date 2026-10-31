@@ -127,6 +127,17 @@ for f in server.json README.md; do
 done
 [ "$fail" -ne 0 ] || echo "ok   server.json and README have no coverage counts or status claims"
 
+# Bilingual-label claims are unverified; keep them out of every public text.
+label_re='bilingual|English and Japanese|英語と日本語|EN/JA'
+claim_files=(plugin.json .claude-plugin/plugin.json server.json glama.json README.md SETUP.md)
+while IFS= read -r f; do claim_files+=("$f"); done < <(find skills -type f | sort)
+for f in "${claim_files[@]}"; do
+  if grep -nHiE "$label_re" "$f"; then
+    err "$f contains a bilingual-label claim"
+  fi
+done
+[ "$fail" -ne 0 ] || echo "ok   no bilingual-label claims"
+
 # jq counts characters, not bytes, so this works in any locale.
 ja_len=$(jq "$oai.publication.translations[\"ja-JP\"].subtitle // \"\" | length" plugin.json)
 [ "$ja_len" -le 30 ] || err "ja-JP subtitle is longer than 30 characters ($ja_len)"

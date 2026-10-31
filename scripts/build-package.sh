@@ -22,7 +22,12 @@ rm -rf "$out"
 mkdir -p "$stage"
 
 cp plugin.json mcp.json LICENSE "$stage/"
-cp -R assets "$stage/assets"
+while IFS= read -r p; do
+  case "$p" in ./skills/*) continue ;; esac
+  [ -f "$p" ] || { echo "ERROR: $p is referenced in plugin.json but missing" >&2; exit 1; }
+  mkdir -p "$stage/$(dirname "$p")"
+  cp "$p" "$stage/$p"
+done < <(jq -r '.. | strings | select(startswith("./"))' plugin.json)
 mkdir -p "$stage/skills"
 for d in skills/*/; do
   name=$(basename "$d")

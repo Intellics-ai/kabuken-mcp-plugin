@@ -22,7 +22,7 @@ Input: one company name, ticker, or EDINET entity code, given by the user
    not suggest plans, prices or links. Do not guess figures.
 3. Call `get_risk_context` with `entity_code` for BOJ rate-sensitivity and
    METI export-control notes.
-4. Present a short snapshot: company name (EN/JA), industry, and for the
+4. Present a short snapshot: company name, industry, and for the
    latest period revenue, operating income, net income, total assets and
    equity, plus any risk-context notes. State the period and source filing
    for every figure.

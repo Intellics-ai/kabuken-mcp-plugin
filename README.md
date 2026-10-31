@@ -5,7 +5,7 @@ clients the financial statements, segment breakdowns and major shareholders
 of Japanese listed companies, taken from their official EDINET filings. Each
 figure comes with its source filing and its period. Connect your client to
 `https://kabuken.intellics.ai/mcp`. Kabuken returns individual XBRL facts
-with English and Japanese taxonomy labels and calculation-linkbase trees.
+with taxonomy labels and calculation-linkbase trees.
 Kabuken does not provide stock prices or investment advice.
 
 KabukenはEDINET MCPサーバーです。Claude、ChatGPTなどのMCPクライアントから、
@@ -72,15 +72,15 @@ Read-only tools, grouped by purpose. None write or modify data.
 **Company and industry discovery**
 - `search_companies` — search Japanese listed companies by name (EN or JA, partial match)
 - `get_company` — full company record by any identifier (entity code, ticker, name)
-- `list_industries` — TSE industry classification taxonomy (bilingual)
+- `list_industries` — TSE industry classification taxonomy
 
 **Filings**
 - `list_documents` — EDINET filing list for a company, with submission dates, period coverage, and XBRL/PDF availability
 
 **Financial facts**
-- `get_financial_facts` — structured XBRL facts for a single filing, bilingual labels
+- `get_financial_facts` — structured XBRL facts for a single filing
 - `get_calculation_tree` — XBRL calculation linkbase as a tree (how totals decompose into components)
-- `get_segment_breakdown` — segment/geography/consolidation-scope dimensional data, bilingual axis and member labels
+- `get_segment_breakdown` — segment/geography/consolidation-scope dimensional data, axis and member labels
 - `get_company_financials` — multi-period income statement, balance sheet, and cash flow, grouped by statement type
 
 **Comparison and screening**
