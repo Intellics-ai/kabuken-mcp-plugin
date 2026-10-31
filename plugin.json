@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "kabuken",
-  "version": "2.1.6",
+  "version": "2.1.7",
   "description": "Financial data from the official EDINET filings of Japanese listed companies, with the source filing for each figure. No stock prices or investment advice.",
   "author": {
     "name": "Intellics K.K.",
@@ -25,7 +25,7 @@
       "interface": {
         "displayName": "Kabuken",
         "shortDescription": "Japanese company filings data",
-        "longDescription": "Kabuken gives you financial data on Japanese listed companies. Find a company by name, then get its financial statements, business and geographic segments, major shareholders and filing list. You can also compare two to five companies side by side. Data from official EDINET filings, with the source filing for each figure. Labels are available in English and Japanese. No stock prices or investment advice. A Kabuken account is required; you sign in with Google.",
+        "longDescription": "Kabuken gives you financial data on Japanese listed companies. Find a company by name, then get its financial statements, business and geographic segments, major shareholders and filing list. You can also compare two to five companies side by side. Data from official EDINET filings, with the source filing for each figure. No stock prices or investment advice. A Kabuken account is required; you sign in with Google.",
         "developerName": "Intellics K.K.",
         "category": "Finance",
         "capabilities": [
@@ -71,7 +71,7 @@
               "description": "Business and geographic segment breakdown from one filing.",
               "prompt": "Show Honda Motor's revenue by business segment from its latest annual securities report.",
               "tools_triggered": "search_companies, list_documents, get_segment_breakdown",
-              "expected_behavior": "Resolves Honda Motor Co., Ltd., picks its most recent annual securities report from the filing list, and returns the segment figures grouped by axis with English and Japanese member labels. State the fiscal period and cite the source EDINET filing by its doc_id for every figure. Keeps the EDINET Taxonomy notice that the tool returns."
+              "expected_behavior": "Resolves Honda Motor Co., Ltd., picks its most recent annual securities report from the filing list, and returns the segment figures grouped by axis with member labels. State the fiscal period and cite the source EDINET filing by its doc_id for every figure. Keeps the EDINET Taxonomy notice that the tool returns."
             },
             {
               "description": "Major shareholders of a listed company.",
@@ -110,11 +110,11 @@
       },
       "publication": {
         "countries": [],
-        "release_notes": "Kabuken 2.1.6: new Kabuken logo, README updates and stricter package checks. Kabuken lets you look up Japanese listed companies and read financial statements, segment data and major shareholders from their official EDINET filings, with the source filing for each figure.",
+        "release_notes": "Kabuken 2.1.7: description updates. Kabuken lets you look up Japanese listed companies and read financial statements, segment data and major shareholders from their official EDINET filings, with the source filing for each figure.",
         "translations": {
           "ja-JP": {
             "subtitle": "日本の上場企業の開示データ",
-            "description": "Kabuken（カブケン）は、日本の上場企業の財務データを提供します。会社名で企業を検索し、財務諸表、事業別・地域別のセグメント情報、大株主、提出書類の一覧を取得できます。2社から5社までを並べて比較することもできます。データはEDINETの公式な提出書類に基づき、各数値には出典となる書類を示します。項目名は英語と日本語で表示できます。株価や投資助言は提供しません。Kabukenのアカウントが必要です（Googleでサインイン）。\n\n主な機能:\n・日本の上場企業を検索\n・EDINET提出書類から財務諸表を表示\n・セグメント別の内訳を表示\n・複数の企業を並べて比較\n・企業の提出書類を一覧表示\n\n質問の例:\n・トヨタ自動車のEDINETコードは？\n・ソニーグループの最新の有価証券報告書の売上高と営業利益は？\n・トヨタとホンダを売上高、純利益、総資産で比較して"
+            "description": "Kabuken（カブケン）は、日本の上場企業の財務データを提供します。会社名で企業を検索し、財務諸表、事業別・地域別のセグメント情報、大株主、提出書類の一覧を取得できます。2社から5社までを並べて比較することもできます。データはEDINETの公式な提出書類に基づき、各数値には出典となる書類を示します。株価や投資助言は提供しません。Kabukenのアカウントが必要です（Googleでサインイン）。\n\n主な機能:\n・日本の上場企業を検索\n・EDINET提出書類から財務諸表を表示\n・セグメント別の内訳を表示\n・複数の企業を並べて比較\n・企業の提出書類を一覧表示\n\n質問の例:\n・トヨタ自動車のEDINETコードは？\n・ソニーグループの最新の有価証券報告書の売上高と営業利益は？\n・トヨタとホンダを売上高、純利益、総資産で比較して"
           }
         }
       }

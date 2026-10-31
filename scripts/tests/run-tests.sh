@@ -76,6 +76,38 @@ else
 fi
 rm -rf "$dir"
 
+# 4b. Unverified bilingual-label wording must fail validation (Claude description, OpenAI text, README).
+dir=$(copy_repo)
+jq '.description += " with bilingual EN/JA labels"' .claude-plugin/plugin.json > "$dir/.claude-plugin/plugin.json"
+out=$(bash "$dir/scripts/validate-package.sh" 2>&1)
+if [ $? -ne 0 ] && printf '%s\n' "$out" | grep -q 'bilingual-label claim'; then
+  pass "bilingual-label wording in the Claude description fails validation"
+else
+  fail "bilingual-label wording in the Claude description passes validation"
+fi
+rm -rf "$dir"
+
+dir=$(copy_repo)
+printf '\nLabels are available in English and Japanese.\n' >> "$dir/README.md"
+out=$(bash "$dir/scripts/validate-package.sh" 2>&1)
+if [ $? -ne 0 ] && printf '%s\n' "$out" | grep -q 'README.md contains a bilingual-label claim'; then
+  pass "bilingual-label wording in README.md fails validation"
+else
+  fail "bilingual-label wording in README.md passes validation"
+fi
+rm -rf "$dir"
+
+# 4d. The real server.json description_ja that carried a bilingual-label claim must fail validation.
+dir=$(copy_repo)
+jq '._meta["io.modelcontextprotocol.registry/publisher-provided"].description_ja = "EDINET開示書類のXBRLデータを、ファクト単位でAIクライアントに提供。日英バイリンガルラベル、財務データ、スクリーニング。株価は含みません。利用にはサインアップが必要です。"' server.json > "$dir/server.json"
+out=$(bash "$dir/scripts/validate-package.sh" 2>&1)
+if [ $? -ne 0 ] && printf '%s\n' "$out" | grep -q 'server.json contains a bilingual-label claim'; then
+  pass "bilingual-label wording in server.json description_ja fails validation"
+else
+  fail "bilingual-label wording in server.json description_ja passes validation"
+fi
+rm -rf "$dir"
+
 # 5. The repository itself must pass validation.
 if out=$(bash scripts/validate-package.sh 2>&1); then
   pass "repository passes validate-package.sh"
