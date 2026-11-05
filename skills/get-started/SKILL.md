@@ -18,8 +18,8 @@ description: Look up a Japanese listed company in Kabuken and get figures from i
    - `compare_companies` (`entity_codes`, 2 to 5 codes) for peers;
    - `get_filing_text` (`entity_code` or `doc_id`) to read the risk factors
      (`business_risks`) or management discussion (`md_and_a`) of an annual
-     report as filed. It returns the filer's own Japanese text, not a
-     summary.
+     report as filed (see the `filing-text` skill). It returns the filer's
+     own Japanese text, not a summary.
 4. State the period and the source filing for every figure.
 5. Kabuken has no stock prices and gives no investment advice. Do not add
    a price, market cap or valuation ratio.
