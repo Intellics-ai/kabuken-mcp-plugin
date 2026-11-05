@@ -108,6 +108,29 @@ else
 fi
 rm -rf "$dir"
 
+# 4e. A skill that names a tool missing from tool-names.txt must fail validation.
+dir=$(copy_repo)
+printf '\nCall `get_nonexistent_text` for the text.\n' >> "$dir/skills/get-started/SKILL.md"
+out=$(bash "$dir/scripts/validate-package.sh" 2>&1)
+if [ $? -ne 0 ] && printf '%s\n' "$out" | grep -q 'skills/get-started/SKILL.md names an unknown tool: get_nonexistent_text'; then
+  pass "skill naming an unknown tool fails validation"
+else
+  fail "skill naming an unknown tool passes validation"
+fi
+rm -rf "$dir"
+
+# 4f. The filing text tool must be an allowed tool name and be taught by a skill.
+if grep -qxF get_filing_text scripts/tool-names.txt; then
+  pass "get_filing_text is in tool-names.txt"
+else
+  fail "get_filing_text is missing from tool-names.txt"
+fi
+if grep -q 'get_filing_text' skills/company-snapshot/SKILL.md skills/get-started/SKILL.md; then
+  pass "company-snapshot and get-started teach get_filing_text"
+else
+  fail "get_filing_text is not taught in company-snapshot or get-started"
+fi
+
 # 5. The repository itself must pass validation.
 if out=$(bash scripts/validate-package.sh 2>&1); then
   pass "repository passes validate-package.sh"
