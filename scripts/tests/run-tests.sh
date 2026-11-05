@@ -142,6 +142,31 @@ else
   fail "get_filing_text is not taught in company-snapshot or get-started"
 fi
 
+# 4g. A dedicated skill must name get_filing_text in its description, in the Claude plugin and in the built ZIP.
+filing_skill=""
+for f in skills/*/SKILL.md; do
+  if sed -n '/^---$/,/^---$/p' "$f" | grep -E '^description:' | grep -q 'get_filing_text'; then
+    filing_skill=$(basename "$(dirname "$f")")
+  fi
+done
+if [ -n "$filing_skill" ]; then
+  pass "skill $filing_skill names get_filing_text in its description"
+else
+  fail "no skill names get_filing_text in its frontmatter description"
+fi
+if [ -n "$filing_skill" ] && [ "$filing_skill" != "kabuken-setup" ]; then
+  dir=$(copy_repo)
+  if (cd "$dir" && bash scripts/build-package.sh >/dev/null 2>&1) \
+    && unzip -Z1 "$dir/dist/kabuken-plugin.zip" | grep -qx "skills/$filing_skill/SKILL.md"; then
+    pass "built ZIP contains skills/$filing_skill/SKILL.md"
+  else
+    fail "built ZIP does not contain skills/$filing_skill/SKILL.md"
+  fi
+  rm -rf "$dir"
+else
+  fail "built ZIP has no filing text skill"
+fi
+
 # 5. The repository itself must pass validation.
 if out=$(bash scripts/validate-package.sh 2>&1); then
   pass "repository passes validate-package.sh"
