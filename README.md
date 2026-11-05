@@ -76,6 +76,7 @@ Read-only tools, grouped by purpose. None write or modify data.
 
 **Filings**
 - `list_documents` — EDINET filing list for a company, with submission dates, period coverage, and XBRL/PDF availability
+- `get_filing_text` — narrative sections of an annual securities report (risk factors, management discussion) as filed, in Japanese, without AI processing
 
 **Financial facts**
 - `get_financial_facts` — structured XBRL facts for a single filing
@@ -95,6 +96,9 @@ Read-only tools, grouped by purpose. None write or modify data.
 **AI-powered analysis**
 - `get_document_summary` — AI-generated summary of a filing
 - `analyze_document` — free-text Q&A grounded in a specific filing
+
+**Data quality**
+- `report_data_issue` — report a figure that looks wrong, with the filing it came from
 
 **Account**
 - `get_account_quota` — caller's current daily quota usage, limit, and reset time; does not itself consume quota
@@ -130,7 +134,9 @@ Japanese Government" on redistribution. Tools that surface taxonomy content
 
 Figures returned by `screen_companies`, `get_industry_overview`,
 `compare_companies`, and `get_company_financials` are calculated by Kabuken
-from EDINET filings, not reported directly by EDINET. Output from
+from EDINET filings, not reported directly by EDINET. Text from
+`get_filing_text` is reproduced verbatim from the filing; the filing company
+holds the rights to its text. Output from
 `analyze_document` is AI-generated and may contain errors; it is not
 investment advice.
 

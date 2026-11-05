@@ -26,4 +26,13 @@ Input: one company name, ticker, or EDINET entity code, given by the user
    latest period revenue, operating income, net income, total assets and
    equity, plus any risk-context notes. State the period and source filing
    for every figure.
-5. Do not add a stock price, market cap or P/E. Kabuken has no price data.
+5. If the user asks about risks, outlook or the business, call
+   `get_filing_text` with `entity_code` (`sections`: `business_risks` for
+   事業等のリスク, `md_and_a` for management discussion; default
+   `business_risks`). Quote the returned text as filed, in Japanese, and
+   say it is the filed text, not a summary. If `next_cursor` is set, call
+   again with `cursor` set to `next_cursor` and the same `entity_code` and
+   `sections` to get the next page. Name `missing_sections` if any. Keep the attribution
+   notice from the response. Translate or summarise only if the user asks,
+   and then label it as such.
+6. Do not add a stock price, market cap or P/E. Kabuken has no price data.
