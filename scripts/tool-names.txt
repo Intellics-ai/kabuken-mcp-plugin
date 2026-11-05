@@ -5,6 +5,7 @@ get_calculation_tree
 get_company
 get_company_financials
 get_document_summary
+get_filing_text
 get_financial_facts
 get_industry_overview
 get_major_shareholders

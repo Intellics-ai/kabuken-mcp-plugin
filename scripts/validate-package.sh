@@ -55,6 +55,11 @@ while IFS= read -r t; do
   fi
 done < <(jq -r "$oai.review.test_cases | (.positive + .negative)[] | .tools_triggered // empty" plugin.json | tr ',' '\n' | sed 's/^[[:space:]]*//; s/[[:space:]]*$//' | sort -u)
 
+# Every tool a skill names in backticks must be a real server tool.
+while IFS=: read -r f t; do
+  grep -qxF "$t" scripts/tool-names.txt || err "$f names an unknown tool: $t"
+done < <(grep -oHE '`(get|list|search|screen|compare|analyze)_[a-z_]+`' -r skills --include=SKILL.md | tr -d '`' | sort -u)
+
 # Never put credentials or reviewer instructions in the package.
 for k in test_credentials reviewer_instructions; do
   if jq -e --arg k "$k" '[.. | objects | has($k)] | any' plugin.json >/dev/null; then
