@@ -119,6 +119,17 @@ else
 fi
 rm -rf "$dir"
 
+# 4e2. A skill that names an unknown report_* tool must fail validation.
+dir=$(copy_repo)
+printf '\nCall `report_nonexistent_issue` to flag it.\n' >> "$dir/skills/get-started/SKILL.md"
+out=$(bash "$dir/scripts/validate-package.sh" 2>&1)
+if [ $? -ne 0 ] && printf '%s\n' "$out" | grep -q 'skills/get-started/SKILL.md names an unknown tool: report_nonexistent_issue'; then
+  pass "skill naming an unknown report_ tool fails validation"
+else
+  fail "skill naming an unknown report_ tool passes validation"
+fi
+rm -rf "$dir"
+
 # 4f. The filing text tool must be an allowed tool name and be taught by a skill.
 if grep -qxF get_filing_text scripts/tool-names.txt; then
   pass "get_filing_text is in tool-names.txt"

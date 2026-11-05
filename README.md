@@ -97,6 +97,9 @@ Read-only tools, grouped by purpose. None write or modify data.
 - `get_document_summary` — AI-generated summary of a filing
 - `analyze_document` — free-text Q&A grounded in a specific filing
 
+**Data quality**
+- `report_data_issue` — report a figure that looks wrong, with the filing it came from
+
 **Account**
 - `get_account_quota` — caller's current daily quota usage, limit, and reset time; does not itself consume quota
 

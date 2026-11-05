@@ -13,5 +13,6 @@ get_risk_context
 get_segment_breakdown
 list_documents
 list_industries
+report_data_issue
 screen_companies
 search_companies
