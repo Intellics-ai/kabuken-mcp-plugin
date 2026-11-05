@@ -145,7 +145,8 @@ fi
 # 4g. A dedicated skill must name get_filing_text in its description, in the Claude plugin and in the built ZIP.
 filing_skill=""
 for f in skills/*/SKILL.md; do
-  if sed -n '/^---$/,/^---$/p' "$f" | grep -E '^description:' | grep -q 'get_filing_text'; then
+  desc=$(sed -n '/^---$/,/^---$/p' "$f" | grep -E '^description:' || true)
+  if [[ "$desc" == *get_filing_text* ]]; then
     filing_skill=$(basename "$(dirname "$f")")
   fi
 done
@@ -156,8 +157,11 @@ else
 fi
 if [ -n "$filing_skill" ] && [ "$filing_skill" != "kabuken-setup" ]; then
   dir=$(copy_repo)
-  if (cd "$dir" && bash scripts/build-package.sh >/dev/null 2>&1) \
-    && unzip -Z1 "$dir/dist/kabuken-plugin.zip" | grep -qx "skills/$filing_skill/SKILL.md"; then
+  zip_list=""
+  if (cd "$dir" && bash scripts/build-package.sh >/dev/null 2>&1); then
+    zip_list=$(unzip -Z1 "$dir/dist/kabuken-plugin.zip")
+  fi
+  if printf '%s\n' "$zip_list" | grep -qxF "skills/$filing_skill/SKILL.md"; then
     pass "built ZIP contains skills/$filing_skill/SKILL.md"
   else
     fail "built ZIP does not contain skills/$filing_skill/SKILL.md"

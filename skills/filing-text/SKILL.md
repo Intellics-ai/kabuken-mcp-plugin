@@ -14,8 +14,8 @@ given by the user.
      (`query`) or `get_company` (`id`, `id_type: "ticker"`). If several
      companies match, ask the user to pick one.
 2. Call `get_filing_text` with `doc_id` or `entity_code` (the entity code
-   reads the latest annual report). Set `sections`: `business_risks` for
-   事業等のリスク (default) or `md_and_a` for management discussion and
+   reads the newest annual report that has XBRL data). Set `sections`:
+   `business_risks` for 事業等のリスク (default) or `md_and_a` for management discussion and
    outlook. Optional `max_chars` limits the size of each page.
 3. Each item in `sections` has `section`, `source_element`, `label_ja`,
    `label_en` and `text`. The text is the filer's own Japanese wording,
