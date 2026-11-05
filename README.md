@@ -115,6 +115,8 @@ Get an account and a `kbk_` API key (or use OAuth) at
 - `/kabuken:peer-comparison <company, company, ...>` — side-by-side financials for 2-5 companies
 - `/kabuken:segment-breakdown <company>` — business/geographic segment breakdown for a filing
 
+The `filing-text` skill loads when you ask for risk factors, management discussion or the original filing text; it reads them as filed with `get_filing_text`.
+
 ## Attribution
 
 EDINET content (filings, facts, dimensions) is used under Japan's Public

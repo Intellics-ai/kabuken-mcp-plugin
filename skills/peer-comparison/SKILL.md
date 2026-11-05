@@ -26,8 +26,8 @@ commas, given by the user (in Claude Code, the command argument).
 5. Present a table, one row per metric and one column per company. Show the
    period-end date for each company, because fiscal year-ends can differ.
    If a metric is null, show its `omission_reason` instead of a number.
-6. If the user asks how the risks differ, call `get_filing_text` with
-   `entity_code` for each company (`business_risks`) and quote the filed
-   passages side by side. Say it is filed text, not a summary.
+6. If the user asks how the risks differ, follow the `filing-text` skill
+   (`get_filing_text`, `business_risks`) for each company and quote the
+   filed passages side by side.
 7. Do not rank companies by a price-based metric (P/E, market cap, dividend
    yield). Kabuken has no price data.
