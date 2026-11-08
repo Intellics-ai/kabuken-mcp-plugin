@@ -35,7 +35,8 @@
           "Read financial statements from EDINET filings",
           "Show segment breakdowns",
           "Compare companies side by side",
-          "List company filings"
+          "List company filings",
+          "Summarize a company's major facilities by country and prefecture"
         ],
         "websiteURL": "https://kabuken.intellics.ai",
         "supportURL": "https://kabuken.intellics.ai/support",
@@ -112,11 +113,11 @@
       },
       "publication": {
         "countries": [],
-        "release_notes": "Kabuken 2.1.10: listing and README text updates. Kabuken lets you look up Japanese listed companies and read financial statements, segment data and major shareholders from their official EDINET filings, with the source filing for each figure.",
+        "release_notes": "Kabuken 2.1.10: get_company can return a summary of a company's major facilities from its latest annual report (include_sites): counts by country and by prefecture, with the source filing. Listing and README text updates.",
         "translations": {
           "ja-JP": {
             "subtitle": "日本の上場企業の開示データ",
-            "description": "Kabuken（カブケン）は、日本の上場企業の財務データを提供します。会社名で企業を検索し、財務諸表、事業別・地域別のセグメント情報、大株主、提出書類の一覧を取得できます。2社から5社までを並べて比較することもできます。データはEDINETの公式な提出書類に基づき、各数値には出典となる書類を示します。株価や投資助言は提供しません。Kabukenのアカウントが必要です（Googleでサインイン）。\n\n主な機能:\n・日本の上場企業を検索\n・EDINET提出書類から財務諸表を表示\n・セグメント別の内訳を表示\n・複数の企業を並べて比較\n・企業の提出書類を一覧表示\n\n質問の例:\n・トヨタ自動車のEDINETコードは？\n・ソニーグループの最新の有価証券報告書の売上高と営業利益は？\n・トヨタとホンダを売上高、純利益、総資産で比較して"
+            "description": "Kabuken（カブケン）は、日本の上場企業の財務データを提供します。会社名で企業を検索し、財務諸表、事業別・地域別のセグメント情報、大株主、提出書類の一覧を取得できます。2社から5社までを並べて比較することもできます。データはEDINETの公式な提出書類に基づき、各数値には出典となる書類を示します。株価や投資助言は提供しません。Kabukenのアカウントが必要です（Googleでサインイン）。\n\n主な機能:\n・日本の上場企業を検索\n・EDINET提出書類から財務諸表を表示\n・セグメント別の内訳を表示\n・複数の企業を並べて比較\n・企業の提出書類を一覧表示\n・主要な設備の所在国と都道府県を集計\n\n質問の例:\n・トヨタ自動車のEDINETコードは？\n・ソニーグループの最新の有価証券報告書の売上高と営業利益は？\n・トヨタとホンダを売上高、純利益、総資産で比較して\n・ある企業が主要な設備を置いている国と都道府県は？"
           }
         }
       }

@@ -16,6 +16,9 @@ description: Look up a Japanese listed company in Kabuken and get figures from i
      in `documents`;
    - `get_segment_breakdown` (`doc_id`) for figures by segment or region;
    - `compare_companies` (`entity_codes`, 2 to 5 codes) for peers;
+   - `get_company` (`id`, `include_sites: true`) for a summary of the
+     company's major facilities from its latest annual report: counts by
+     country and by prefecture, with the source filing;
    - `get_filing_text` (`entity_code` or `doc_id`) to read the risk factors
      (`business_risks`) or management discussion (`md_and_a`) of an annual
      report as filed (see the `filing-text` skill). It returns the filer's

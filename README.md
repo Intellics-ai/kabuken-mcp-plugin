@@ -76,7 +76,7 @@ Read-only tools, grouped by purpose. None write or modify data.
 
 **Company and industry discovery**
 - `search_companies` — search Japanese listed companies by name (EN or JA, partial match)
-- `get_company` — full company record by any identifier (entity code, ticker, name)
+- `get_company` — full company record by any identifier (entity code, ticker, name). With `include_sites: true`, it also returns a summary of the company's major facilities from its latest annual report: counts by country and by prefecture, with the source filing.
 - `list_industries` — TSE industry classification taxonomy
 
 **Filings**
