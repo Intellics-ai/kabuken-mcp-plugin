@@ -18,7 +18,9 @@
     "filings",
     "finance",
     "edinet-mcp",
-    "financial-statements"
+    "financial-statements",
+    "japanese-stocks",
+    "japan-stocks"
   ],
   "extensions": {
     "com.openai": {

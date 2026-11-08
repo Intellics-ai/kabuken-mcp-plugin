@@ -18,7 +18,9 @@
     "finance",
     "mcp",
     "edinet-mcp",
-    "financial-statements"
+    "financial-statements",
+    "japanese-stocks",
+    "japan-stocks"
   ],
   "icon": "./assets/icon.png",
   "supportUrl": "https://kabuken.intellics.ai/support",
