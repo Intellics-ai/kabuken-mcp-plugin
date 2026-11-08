@@ -1,14 +1,14 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-09-16/server.schema.json",
   "name": "io.github.Intellics-ai/kabuken",
-  "description": "Japanese EDINET XBRL facts, financials, screening. No prices. Signup required.",
+  "description": "EDINET filings of Japanese stocks: financial statements, segments, shareholders. No stock prices.",
   "status": "active",
   "repository": {
     "url": "https://github.com/Intellics-ai/kabuken-mcp-plugin",
     "source": "github",
     "id": "1383159624"
   },
-  "version": "2.1.9",
+  "version": "2.1.10",
   "websiteUrl": "https://kabuken.intellics.ai",
   "remotes": [
     {
@@ -18,7 +18,7 @@
   ],
   "_meta": {
     "io.modelcontextprotocol.registry/publisher-provided": {
-      "description_ja": "EDINET開示書類のXBRLデータを、ファクト単位でAIクライアントに提供。財務データ、スクリーニング。株価は含みません。利用にはサインアップが必要です。",
+      "description_ja": "日本株のEDINET提出書類から、財務諸表、セグメント情報、大株主を提供します。株価は提供しません。",
       "categories": ["finance", "data"],
       "auth": {
         "type": "bearer",
