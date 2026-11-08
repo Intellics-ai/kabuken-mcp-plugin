@@ -1,23 +1,28 @@
-# Kabuken — EDINET MCP server for Claude and ChatGPT
+# Kabuken: EDINET MCP server for Japanese stocks (Claude and ChatGPT)
 
-Kabuken is an EDINET MCP server. It gives Claude, ChatGPT and other MCP
-clients the financial statements, segment breakdowns and major shareholders
-of Japanese listed companies, taken from their official EDINET filings. Each
-figure comes with its source filing and its period. Connect your client to
-`https://kabuken.intellics.ai/mcp`. Kabuken returns individual XBRL facts
-with taxonomy labels and calculation-linkbase trees.
-Kabuken does not provide stock prices or investment advice.
+Kabuken is an MCP server for Japanese stocks (日本株) built on EDINET, Japan's
+disclosure system. It gives Claude, ChatGPT, Cursor and other MCP clients the
+financial statements, segment breakdowns and major shareholders of Japanese
+listed companies, taken from their official filings, including the annual
+securities reports (有価証券報告書). Each figure comes with the filing it was
+taken from and the period it covers, so you can check it against the original
+document.
 
-KabukenはEDINET MCPサーバーです。Claude、ChatGPTなどのMCPクライアントから、
-日本の上場企業がEDINETに提出した書類の財務諸表、セグメント情報、大株主を
-取得できます。各数値には出典となる提出書類と対象期間を示します。接続先は
-`https://kabuken.intellics.ai/mcp` です。株価や投資助言は提供しません。
+Kabuken does not provide stock prices, market data or investment advice. It
+answers questions about what a company reported. Connect your client to
+`https://kabuken.intellics.ai/mcp` (Streamable HTTP). An account is required:
+Claude and ChatGPT connect with OAuth sign-in, and other MCP clients can use an
+API key. Kabuken returns individual XBRL facts with taxonomy labels and
+calculation-linkbase trees.
+
+Kabukenは、EDINETをもとにした日本株向けのMCPサーバーです。Claude、ChatGPTなどの
+MCPクライアントから、日本の上場企業が提出した有価証券報告書などの財務諸表、
+セグメント情報、大株主を取得できます。各数値には出典となる提出書類と対象期間を
+示します。株価、市場データ、投資助言は提供しません。接続先は
+`https://kabuken.intellics.ai/mcp` です。
 
 EDINET MCP guide: [English](https://kabuken.intellics.ai/docs/en/edinet-mcp/) ·
 [日本語](https://kabuken.intellics.ai/docs/ja/edinet-mcp/)
-
-Signup is required. Get an account and a `kbk_` API key (or use OAuth) at
-[kabuken.intellics.ai](https://kabuken.intellics.ai).
 
 ## What Kabuken provides
 
