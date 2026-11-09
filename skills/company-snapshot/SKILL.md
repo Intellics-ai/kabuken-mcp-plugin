@@ -26,6 +26,11 @@ Input: one company name, ticker, or EDINET entity code, given by the user
    latest period revenue, operating income, net income, total assets and
    equity, plus any risk-context notes. State the period and source filing
    for every figure.
-5. If the user asks about risks, outlook or the business, follow the
+5. If the user asks where the company has facilities, call `get_company`
+   with `id` and `include_sites: true`. It returns counts of major
+   facilities by country and by prefecture from the latest annual report,
+   with the source filing. The counts are rows of the facilities tables,
+   not size or value.
+6. If the user asks about risks, outlook or the business, follow the
    `filing-text` skill (`get_filing_text`) and quote the filed text.
-6. Do not add a stock price, market cap or P/E. Kabuken has no price data.
+7. Do not add a stock price, market cap or P/E. Kabuken has no price data.
