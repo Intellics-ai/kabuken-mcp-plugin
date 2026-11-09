@@ -1,5 +1,7 @@
 # Kabuken: EDINET MCP server for Japanese stocks (Claude and ChatGPT)
 
+[![mcptry](https://mcptry.com/badge/io.github.Intellics-ai/kabuken)](https://mcptry.com/servers/io.github.Intellics-ai/kabuken)
+
 Kabuken is an MCP server for Japanese stocks (日本株) built on EDINET, Japan's
 disclosure system. It gives Claude, ChatGPT, Cursor and other MCP clients the
 financial statements, segment breakdowns and major shareholders of Japanese
