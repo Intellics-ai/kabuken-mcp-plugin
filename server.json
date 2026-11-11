@@ -9,7 +9,7 @@
     "source": "github",
     "id": "1383159624"
   },
-  "version": "2.1.11",
+  "version": "2.1.12",
   "icons": [
     { "src": "https://raw.githubusercontent.com/Intellics-ai/kabuken-mcp-plugin/main/assets/icon.png", "mimeType": "image/png", "sizes": ["180x180"], "theme": "light" },
     { "src": "https://raw.githubusercontent.com/Intellics-ai/kabuken-mcp-plugin/main/assets/icon-dark.png", "mimeType": "image/png", "sizes": ["180x180"], "theme": "dark" }

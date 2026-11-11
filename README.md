@@ -89,7 +89,7 @@ Read-only tools, grouped by purpose. None write or modify data.
 - `get_financial_facts` — structured XBRL facts for a single filing
 - `get_calculation_tree` — XBRL calculation linkbase as a tree (how totals decompose into components)
 - `get_segment_breakdown` — segment/geography/consolidation-scope dimensional data, axis and member labels
-- `get_company_financials` — multi-period income statement, balance sheet, and cash flow, grouped by statement type
+- `get_company_financials` — headline figures and a fiscal-year series by default; full statements with `include: ["statements"]`
 
 **Comparison and screening**
 - `compare_companies` — side-by-side financial matrix for 2-5 companies from their latest annual securities report

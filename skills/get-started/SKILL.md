@@ -10,7 +10,8 @@ description: Look up a Japanese listed company in Kabuken and get figures from i
    code (`company_entity_code`, for example `E02144` for Toyota). If
    several companies match, ask the user to pick one.
 2. Call `get_company_financials` with `entity_code` for revenue, profit,
-   assets, equity and cash flow from recent annual reports.
+   assets and equity from recent annual reports. For cash flow or full
+   statements, also pass `include: ["statements"]`.
 3. For other questions, use the entity code with:
    - `list_documents` (`entity_code`) to find a filing and its `doc_id`
      in `documents`;
