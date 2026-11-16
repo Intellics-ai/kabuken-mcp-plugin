@@ -222,6 +222,66 @@ else
 fi
 rm -rf "$dir"
 
+# 4i. OpenAI field lengths (developers.openai.com/plugins/deploy/submission):
+# starter prompts at most 128 characters. The portal rejected 2.2.1 with
+# "Conversation starter 1: Prompt must be 128 characters or fewer" (#1117).
+long_prompt=$(printf 'x%.0s' $(seq 1 129))
+dir=$(copy_repo)
+jq --arg p "$long_prompt" '.extensions["com.openai"].interface.defaultPrompt[0] = $p' plugin.json > "$dir/plugin.json"
+out=$(bash "$dir/scripts/validate-package.sh" 2>&1)
+if [ $? -ne 0 ] && printf '%s\n' "$out" | grep -q 'defaultPrompt entry is 129 characters; OpenAI allows at most 128'; then
+  pass "a 129-character defaultPrompt fails validation"
+else
+  fail "a 129-character defaultPrompt passes validation"
+fi
+rm -rf "$dir"
+
+# The real 2.2.1 manifest (commit c972f837) that the portal rejected must fail on prompt 1.
+if git cat-file -e c972f837:plugin.json 2>/dev/null; then
+  dir=$(copy_repo)
+  git show c972f837:plugin.json > "$dir/plugin.json"
+  out=$(bash "$dir/scripts/validate-package.sh" 2>&1)
+  if [ $? -ne 0 ] && printf '%s\n' "$out" | grep -q 'defaultPrompt entry is 129 characters; OpenAI allows at most 128: Screen Japanese electronics companies'; then
+    pass "the rejected 2.2.1 plugin.json fails on prompt 1 (129 characters)"
+  else
+    fail "the rejected 2.2.1 plugin.json passes the prompt length check"
+  fi
+  rm -rf "$dir"
+else
+  echo "SKIP c972f837 is not in this clone"
+fi
+
+# ja-JP example questions: characters, not bytes. 128 kana pass, 129 fail.
+for n in 128 129; do
+  q=$(printf 'あ%.0s' $(seq 1 "$n"))
+  dir=$(copy_repo)
+  jq --arg q "$q" '.extensions["com.openai"].publication.translations["ja-JP"].description |= (split("\n") | (length - 1) as $l | .[$l] = "・" + $q | join("\n"))' plugin.json > "$dir/plugin.json"
+  out=$(bash "$dir/scripts/validate-package.sh" 2>&1)
+  rc=$?
+  if [ "$n" -eq 128 ]; then
+    if [ "$rc" -eq 0 ]; then pass "a 128-character ja-JP example question passes validation"
+    else fail "a 128-character ja-JP example question fails validation"; printf '%s\n' "$out" | grep -E '^ERROR' | sed 's/^/     /'; fi
+  else
+    if [ "$rc" -ne 0 ] && printf '%s\n' "$out" | grep -q 'ja-JP example question is 129 characters; OpenAI allows at most 128'; then
+      pass "a 129-character ja-JP example question fails validation"
+    else fail "a 129-character ja-JP example question passes validation"; fi
+  fi
+  rm -rf "$dir"
+done
+
+# Other documented limits: shortDescription 30, capability label 120, ja-JP subtitle 30.
+dir=$(copy_repo)
+jq '.extensions["com.openai"].interface.shortDescription = "Japanese company filings data!!" | .extensions["com.openai"].interface.capabilities[0] = ("c" * 121) | .extensions["com.openai"].publication.translations["ja-JP"].subtitle = ("あ" * 31)' plugin.json > "$dir/plugin.json"
+out=$(bash "$dir/scripts/validate-package.sh" 2>&1)
+if [ $? -ne 0 ] && printf '%s\n' "$out" | grep -q 'shortDescription is 31 characters' \
+  && printf '%s\n' "$out" | grep -q 'capability label is 121 characters' \
+  && printf '%s\n' "$out" | grep -q 'ja-JP subtitle is 31 characters'; then
+  pass "over-length shortDescription, capability label and ja-JP subtitle fail validation"
+else
+  fail "over-length shortDescription, capability label or ja-JP subtitle passes validation"
+fi
+rm -rf "$dir"
+
 # 5. The repository itself must pass validation.
 if out=$(bash scripts/validate-package.sh 2>&1); then
   pass "repository passes validate-package.sh"
