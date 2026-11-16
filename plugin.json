@@ -116,7 +116,7 @@
       },
       "publication": {
         "countries": [],
-        "release_notes": "Kabuken 2.2.1: example prompts reduced to three for the OpenAI directory.",
+        "release_notes": "Kabuken 2.2.1: get_company_financials adds officers (role, AGM candidates, pay by category) and human-capital metrics (female managers, male childcare leave by legal basis, gender pay gap) with a compact summary shape; get_major_shareholders adds top shareholders, owner categories and policy holdings; get_financial_facts finds one figure step by step from the filing outline or by keyword. New skills: find-a-fact, people-and-governance, ownership. Example prompts reduced to three.",
         "translations": {
           "ja-JP": {
             "subtitle": "日本の上場企業の開示データ",

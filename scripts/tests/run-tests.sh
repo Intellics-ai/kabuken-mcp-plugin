@@ -201,7 +201,7 @@ else
 fi
 rm -rf "$dir"
 
-# 4h. OpenAI portal: "Add no more than three prompts" (kabuken-cloudflare#1117).
+# 4h. OpenAI portal: "Add no more than three prompts" (Intellics-ai/kabuken-cloudflare#1981).
 # The real 2.2.0 manifest had five defaultPrompt entries and six JA example questions.
 dir=$(copy_repo)
 jq '.extensions["com.openai"].interface.defaultPrompt += ["What is Toyota'"'"'s EDINET entity code?"]' plugin.json > "$dir/plugin.json"

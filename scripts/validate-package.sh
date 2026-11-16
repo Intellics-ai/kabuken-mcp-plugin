@@ -44,7 +44,7 @@ n_neg=$(jq "$oai.review.test_cases.negative | length" plugin.json)
 missing=$(jq -r "$oai.review.test_cases.positive[] | select((.description // \"\") == \"\" or (.prompt // \"\") == \"\" or (.tools_triggered // \"\") == \"\" or (.expected_behavior // \"\") == \"\") | .prompt" plugin.json)
 [ -z "$missing" ] || err "positive case missing description, prompt, tools_triggered or expected_behavior: $missing"
 
-# OpenAI portal rule "Add no more than three prompts" (kabuken-cloudflare#1117):
+# OpenAI portal rule "Add no more than three prompts" (Intellics-ai/kabuken-cloudflare#1981):
 # at most 3 defaultPrompt entries and at most 3 example questions (・ lines
 # after 質問の例) in the ja-JP description.
 n_prompts=$(jq "$oai.interface.defaultPrompt // [] | length" plugin.json)
