@@ -44,6 +44,16 @@ n_neg=$(jq "$oai.review.test_cases.negative | length" plugin.json)
 missing=$(jq -r "$oai.review.test_cases.positive[] | select((.description // \"\") == \"\" or (.prompt // \"\") == \"\" or (.tools_triggered // \"\") == \"\" or (.expected_behavior // \"\") == \"\") | .prompt" plugin.json)
 [ -z "$missing" ] || err "positive case missing description, prompt, tools_triggered or expected_behavior: $missing"
 
+# OpenAI portal rule "Add no more than three prompts" (kabuken-cloudflare#1117):
+# at most 3 defaultPrompt entries and at most 3 example questions (・ lines
+# after 質問の例) in the ja-JP description.
+n_prompts=$(jq "$oai.interface.defaultPrompt // [] | length" plugin.json)
+[ "$n_prompts" -le 3 ] || err "defaultPrompt has $n_prompts prompts; OpenAI allows at most 3"
+n_ja_prompts=$(jq -r "$oai.publication.translations[\"ja-JP\"].description // \"\"" plugin.json \
+  | awk '/^質問の例/ {on=1; next} on && /^・/ {n++} on && !/^・/ {on=0} END {print n+0}')
+[ "$n_ja_prompts" -le 3 ] || err "ja-JP description lists $n_ja_prompts example questions; OpenAI allows at most 3"
+[ "$fail" -ne 0 ] || echo "ok   example prompts: $n_prompts defaultPrompt, $n_ja_prompts ja-JP (at most 3 each)"
+
 # Every tools_triggered name must be a real server tool (scripts/tool-names.txt).
 [ -s scripts/tool-names.txt ] || err "scripts/tool-names.txt is missing or empty"
 while IFS= read -r t; do
