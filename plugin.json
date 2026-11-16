@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "kabuken",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "Financial data from the official EDINET filings of Japanese listed companies, with the source filing for each figure. No stock prices or investment advice.",
   "author": {
     "name": "Intellics K.K.",
@@ -46,7 +46,7 @@
         "privacyPolicyURL": "https://kabuken.intellics.ai/privacy",
         "termsOfServiceURL": "https://kabuken.intellics.ai/terms",
         "defaultPrompt": [
-          "Screen Japanese electronics companies by operating margin in their latest annual reports, with the source filing for each figure.",
+          "Screen Japanese electronics makers by operating margin in their latest annual reports, with each figure's source filing.",
           "What is the gender pay gap at Toyota, and who are its directors?",
           "What were Sony's revenue and operating income in its latest annual report, and which filing are they from?"
         ],
@@ -116,7 +116,7 @@
       },
       "publication": {
         "countries": [],
-        "release_notes": "Kabuken 2.2.1: get_company_financials adds officers (role, AGM candidates, pay by category) and human-capital metrics (female managers, male childcare leave by legal basis, gender pay gap) with a compact summary shape; get_major_shareholders adds top shareholders, owner categories and policy holdings; get_financial_facts finds one figure step by step from the filing outline or by keyword. New skills: find-a-fact, people-and-governance, ownership. Example prompts reduced to three.",
+        "release_notes": "Kabuken 2.2.2: get_company_financials adds officers (role, AGM candidates, pay by category) and human-capital metrics (female managers, male childcare leave by legal basis, gender pay gap) with a compact summary shape; get_major_shareholders adds top shareholders, owner categories and policy holdings; get_financial_facts finds one figure step by step from the filing outline or by keyword. New skills: find-a-fact, people-and-governance, ownership. Example prompts reduced to three. Example prompts shortened for the OpenAI directory.",
         "translations": {
           "ja-JP": {
             "subtitle": "日本の上場企業の開示データ",

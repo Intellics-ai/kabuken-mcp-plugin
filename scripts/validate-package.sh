@@ -29,9 +29,6 @@ display=$(jq -r '.extensions["com.openai"].interface.displayName // empty' plugi
 if printf '%s' "$display" | grep -qiE 'mcp|plugin'; then
   err "displayName must not contain MCP or Plugin: $display"
 fi
-[ "${#display}" -le 30 ] || err "displayName is longer than 30 characters"
-short=$(jq -r '.extensions["com.openai"].interface.shortDescription // empty' plugin.json)
-[ "${#short}" -le 30 ] || err "shortDescription is longer than 30 characters"
 
 # Review cases: OpenAI requires exactly 5 positive and 3 negative cases.
 oai='.extensions["com.openai"]'
@@ -53,6 +50,39 @@ n_ja_prompts=$(jq -r "$oai.publication.translations[\"ja-JP\"].description // \"
   | awk '/^質問の例/ {on=1; next} on && /^・/ {n++} on && !/^・/ {on=0} END {print n+0}')
 [ "$n_ja_prompts" -le 3 ] || err "ja-JP description lists $n_ja_prompts example questions; OpenAI allows at most 3"
 [ "$fail" -ne 0 ] || echo "ok   example prompts: $n_prompts defaultPrompt, $n_ja_prompts ja-JP (at most 3 each)"
+
+# OpenAI field length limits (developers.openai.com/plugins/deploy/submission,
+# read 2026-11-17). The portal rejected 2.2.1 with "Conversation starter 1:
+# Prompt must be 128 characters or fewer" (kabuken-cloudflare#1117). jq length
+# counts Unicode characters, not bytes, so Japanese text is counted correctly.
+# Each limit row: label, jq filter that yields strings, maximum characters.
+len_fail=0
+check_len() {
+  local label=$1 filter=$2 max=$3 n
+  while IFS=$'\t' read -r n text; do
+    [ -n "$n" ] || continue
+    if [ "$n" -gt "$max" ]; then
+      err "$label is $n characters; OpenAI allows at most $max: $text"
+      len_fail=1
+    fi
+  done < <(jq -r "$filter | select(type == \"string\") | \"\\(length)\\t\\(gsub(\"\\n\"; \" \")[0:120])\"" plugin.json)
+}
+check_len "name" '.name' 64
+check_len "displayName" "$oai.interface.displayName" 30
+check_len "shortDescription" "$oai.interface.shortDescription" 30
+check_len "longDescription" "$oai.interface.longDescription" 4000
+check_len "defaultPrompt entry" "$oai.interface.defaultPrompt // [] | .[]" 128
+check_len "capability label" "$oai.interface.capabilities // [] | .[]" 120
+check_len "ja-JP subtitle" "$oai.publication.translations[\"ja-JP\"].subtitle" 30
+check_len "ja-JP description" "$oai.publication.translations[\"ja-JP\"].description" 4000
+check_len "ja-JP example question" "$oai.publication.translations[\"ja-JP\"].description // \"\" | split(\"\\n\") | (index(\"質問の例:\") // -1) as \$i | if \$i < 0 then empty else .[\$i+1:] | (first(to_entries[] | select(.value | startswith(\"・\") | not) | .key) // length) as \$e | .[:\$e][] | ltrimstr(\"・\") end" 128
+check_len "positive review case description" "$oai.review.test_cases.positive // [] | .[].description" 4000
+n_caps=$(jq "$oai.interface.capabilities // [] | length" plugin.json)
+[ "$n_caps" -le 20 ] || { err "capabilities has $n_caps labels; OpenAI allows at most 20"; len_fail=1; }
+if jq -e "$oai.publication.translations[\"ja-JP\"].subtitle // \"\" | contains(\"\\n\")" plugin.json >/dev/null; then
+  err "ja-JP subtitle must be a single line"; len_fail=1
+fi
+[ "$len_fail" -ne 0 ] || echo "ok   OpenAI field lengths (prompts <= 128, subtitles <= 30, descriptions <= 4000, capabilities <= 20 x 120)"
 
 # Every tools_triggered name must be a real server tool (scripts/tool-names.txt).
 [ -s scripts/tool-names.txt ] || err "scripts/tool-names.txt is missing or empty"
@@ -163,9 +193,6 @@ for f in "${claim_files[@]}"; do
 done
 [ "$fail" -ne 0 ] || echo "ok   no bilingual-label claims"
 
-# jq counts characters, not bytes, so this works in any locale.
-ja_len=$(jq "$oai.publication.translations[\"ja-JP\"].subtitle // \"\" | length" plugin.json)
-[ "$ja_len" -le 30 ] || err "ja-JP subtitle is longer than 30 characters ($ja_len)"
 
 # One version everywhere: Claude plugin, ChatGPT/Codex package, MCP Registry entry.
 v_root=$(jq -r '.version // empty' plugin.json)
