@@ -1,6 +1,6 @@
 ---
 name: find-a-fact
-description: Find one figure in a single EDINET filing of a Japanese company with get_financial_facts, step by step (outline, section, parent) or by keyword (query). Use when the user asks for a specific line item, a note figure, a cover-page item or "where is X in the filing"; also for 「有報の〇〇の数字」「注記の金額」「この勘定科目はどこ」「XBRLのタグ」「セグメント以外の明細」.
+description: Find one figure in a single EDINET filing of a Japanese company with get_financial_facts, step by step (outline, section, parent) or by keyword (query). Use when the user asks for a specific line item, a note figure, a cover-page item or "where is X in the filing"; also for 「有報の〇〇の数字」「注記の金額」「この勘定科目はどこ」「XBRLのタグ」「有報の〇〇はいくら」「XBRLで〇〇を探して」.
 ---
 
 # Find a fact in one filing
@@ -31,8 +31,10 @@ filing labels when you can, for example `query: "退職給付"` or
 - If `next_cursor` is set and the item is not on the page, call again with
   `cursor` set to `next_cursor` and the same `doc_id`, `query`, filters and
   `limit`.
-- `query` does not search the cover page (`jpdei_cor`) facts. For those, use
-  the descent below with `section: "DEI"` or `section: "CoverPage"`.
+- `get_financial_facts` does not return the document and entity information
+  (`jpdei_cor`) facts in any mode. Use `get_company` or `list_documents` for
+  those. Other cover-page items are in the `CoverPage` section and `query`
+  finds them.
 
 If the keyword finds nothing, or many facts with similar labels, descend.
 
@@ -45,13 +47,14 @@ changing arguments of the next call. Send it together with the `doc_id` and
 1. Sections: call `get_financial_facts` with `doc_id` and `outline: true`.
    Each section has `fact_count`, `concept_count` and `next`. The sections
    can be `BalanceSheet`, `IncomeStatement`, `CashFlows`, `ChangesInEquity`,
-   `ComprehensiveIncome`, `Notes`, `Other`, `CoverPage`, `DEI` and
+   `ComprehensiveIncome`, `Notes`, `Other`, `CoverPage` and
    `Unclassified` (facts without a section). Most note figures are in
    `Notes`; many non-financial items (employees, governance) are in `Other`.
 2. Headings: call with `doc_id`, `section` and `outline: true`. You get the
    top-level headings of that section, up to 100 per page, each with
    `child_count` and `next`. If `next_cursor` is set, call again with the
-   same `doc_id` and `section` and `cursor` to read the next page.
+   same `doc_id`, `section`, `outline: true` and `cursor` set to
+   `next_cursor` to read the next page.
 3. Children: call with `doc_id`, `section` and `parent`. `parent` takes the
    value from a `next` field, or a concept name written `prefix:Name` (for
    example `jppfs_cor:Liabilities`). You get the direct children of that
@@ -65,8 +68,9 @@ Outline calls return no values and stay small. Each step is one call.
 ## 4. Read and present the fact
 
 - Each fact has `fact_name` (the concept), `label_en`, `label_ja`, the
-  value, the unit, the decimals and the context (period, consolidated or
-  non-consolidated, dimension members). One concept can appear in several
+  value, the unit, the decimals, `period_start`, `period_end` or
+  `period_instant`, and `context_ref` (its name shows the period,
+  `NonConsolidatedMember` and any dimension member). One concept can appear in several
   contexts: pick the one that matches the period and scope the user asked
   for, and say which one you used.
 - When two facts share a standard label, they also carry
@@ -77,8 +81,9 @@ Outline calls return no values and stay small. Each step is one call.
 ## Limits
 
 - A heading with no fact of its own gets a label derived from its concept
-  name. The response says so in `label_note`. Call it a derived heading,
-  not a filed label.
+  name. Such a node (and the `parent_label` of its children) carries
+  `label_source: "derived_from_concept_name"`; `label_note` explains it.
+  Call it a derived heading, not a filed label.
 - A cursor from an earlier response is valid only with the same `doc_id`,
   filters and `limit`.
 - For a breakdown by segment or region, use `get_segment_breakdown`. For how

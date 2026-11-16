@@ -27,8 +27,10 @@ Input: one company name, ticker or EDINET entity code, and the question
 
 ## Reading the summary shape
 
-- The section carries `doc_id`, `period_end`, `unit`, a `concepts` table and
-  `concept_ids`. Each block (the reporting company, a subsidiary row, an
+- The section carries `doc_id`, `period_end`, a `concepts` table and
+  `concept_ids`. The officers section has `units` (for `remuneration`,
+  `shares_held` and `head_counts`); the human-capital section has `unit` and
+  `value_format`. Each block (the reporting company, a subsidiary row, an
   officer, a pay category, the board) carries `ctx`, its context.
 - A figure is a plain number when it follows its block and section. If it
   differs, it is `{v, c, ctx, d}`: `v` is the value, `c` indexes `concepts`,
@@ -85,7 +87,8 @@ Input: one company name, ticker or EDINET entity code, and the question
     Promotion of Women's Active Engagement (女性活躍推進法).
   Name the basis when you quote a rate. Do not compare rates of different
   bases as if they were the same measure.
-- Gender wage gap for all, regular and non-regular employees.
+- Gender wage gap: `gender_wage_gap_all`, `gender_wage_gap_regular` and
+  `gender_wage_gap_non_regular`.
 - Ratios are fractions as filed: `0.04` is 4%. A filed `0` is `0`. A blank
   cell (「－」) is `null` or left out; say "not filed", not zero.
 - `extension_metrics` and `reporting_company_extension_metrics` hold the
