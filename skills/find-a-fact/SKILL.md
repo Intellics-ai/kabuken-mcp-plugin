@@ -31,10 +31,10 @@ filing labels when you can, for example `query: "退職給付"` or
 - If `next_cursor` is set and the item is not on the page, call again with
   `cursor` set to `next_cursor` and the same `doc_id`, `query`, filters and
   `limit`.
-- `get_financial_facts` does not return the document and entity information
-  (`jpdei_cor`) facts in any mode. Use `get_company` or `list_documents` for
-  those. Other cover-page items are in the `CoverPage` section and `query`
-  finds them.
+- For document and entity information (EDINET code, filer name, fiscal
+  year), use `get_company` or `list_documents`; `get_financial_facts` does
+  not return `jpdei_cor` facts in any mode. Other cover-page items are in the
+  `CoverPage` section and `query` finds them.
 
 If the keyword finds nothing, or many facts with similar labels, descend.
 
@@ -60,6 +60,10 @@ changing arguments of the next call. Send it together with the `doc_id` and
    example `jppfs_cor:Liabilities`). You get the direct children of that
    heading, with values. A child with `has_children: true` has its own
    `next`; repeat this step until you reach the fact.
+   With `section` and `parent`, read `total` and `context_counts`. Send
+   `context: "primary"` to keep only facts with no dimension member and not
+   `NonConsolidatedMember`. Segment, non-consolidated and equity-component
+   facts stay available with `context: "all"`.
 4. A node that is a fact and also has children carries `own_facts_next`.
    Use it to read the values of that node itself.
 

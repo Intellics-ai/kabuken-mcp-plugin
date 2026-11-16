@@ -57,9 +57,12 @@ Input: one company name, ticker or EDINET entity code, and the question
   100 million yen or more. For others it is `null`: say "not disclosed
   individually", not zero. `shares_held` is `null` where the filing shows
   「－」.
-- `candidates` are the officer candidates put to the annual general meeting
-  (`name_ja`, `title_ja`, `term_ja`, `role`). They are not officers at the
-  filing date and are not in `total`.
+- `candidates` (`name_ja`, `title_ja`, `term_ja`, `role`) are the officers
+  expected after the annual general meeting, as filed. The list can include
+  continuing officers who are not up for election, so do not report it as
+  the number elected. Candidates are not in `total`.
+- If `notes` say an officer's pay is filed in a prior-year context, state
+  that the value is as filed and may be the current-year pay.
 - `remuneration_by_category` gives per category (directors, outside
   directors, auditors and so on) `officer_count`, the filed `total` and the
   pay `components` (fixed, bonus, share awards and so on). A component can
@@ -74,15 +77,17 @@ Input: one company name, ticker or EDINET entity code, and the question
 
 - `reporting_company` holds the filer's own figures.
   `consolidated_subsidiaries` holds one row per subsidiary row of the filing,
-  numbered as in the filing (names are not returned), at most 100 rows;
+  numbered as in the filing, at most 100 rows. Each row carries `name`, the
+  filed company name (`null` when the filer did not tag it);
   `subsidiaries_total` and `subsidiaries_truncated` say when there are more.
 - `female_managers_ratio`: ratio of women in managerial positions.
 - Male childcare leave, by the legal basis the filer used, each for all
   employees and with `_regular` and `_non_regular` suffixes:
-  - `male_childcare_leave_ratio`: Article 71-4 Item 1 rate of the
-    childcare-leave ordinance;
-  - `male_childcare_and_childcare_purpose_leave_ratio`: Article 71-4 Item 2
-    rate, which also counts leave for childcare purposes;
+  - `male_childcare_leave_ratio`: the rate under 育児・介護休業法施行規則
+    第71条の6 第1号;
+  - `male_childcare_and_childcare_purpose_leave_ratio`: the rate under
+    育児・介護休業法施行規則 第71条の6 第2号, which also counts leave for
+    childcare purposes;
   - `male_childcare_leave_ratio_womens_act`: the rate under the Act on the
     Promotion of Women's Active Engagement (女性活躍推進法).
   Name the basis when you quote a rate. Do not compare rates of different

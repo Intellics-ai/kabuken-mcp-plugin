@@ -26,7 +26,8 @@ Input: one company name, ticker or EDINET entity code, and the question.
    the user needs `doc_id` and `period_end` on every row.
 4. If `next_cursor` is set and the user wants more rows, call again with
    `cursor` set to `next_cursor` and the same `entity_code`, `include`,
-   `limit` and `detail`.
+   `limit` and `detail`. Cursor pages return only the paged lists; read
+   `top_holders` and `holder_categories` from the first page.
 
 ## Reading the parts
 
@@ -49,6 +50,9 @@ Input: one company name, ticker or EDINET entity code, and the question.
     holdings of those subsidiaries. Do not add these to the company's own
     holdings. `scope_counts` gives `specified_count` and `deemed_count` per
     scope; the top-level counts are the totals.
+  - Rows with `held_at_year_end: false` were no longer held at year end.
+    Count held positions with `held_specified_count` and
+    `held_deemed_count` in `scope_counts`.
   - The part carries `returned`, `total` and `truncated`. A page holds at
     most 40 rows, even with a higher `limit`.
   - A figure filed in another context (for example the filing date) is in

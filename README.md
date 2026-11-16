@@ -94,7 +94,7 @@ Read-only tools, grouped by purpose. None write or modify data.
 - `get_filing_text` — narrative sections of an annual securities report (risk factors, management discussion) as filed, in Japanese, without AI processing
 
 **Financial facts**
-- `get_financial_facts` — structured XBRL facts for a single filing. Find one fact step by step: `outline: true` lists the sections, `section` with `outline: true` lists its headings (100 per page), `section` with `parent` returns the children with values; every outline node has a `next` field with the arguments of the next call. `query` searches labels and concept names. Sections: `BalanceSheet`, `IncomeStatement`, `CashFlows`, `ChangesInEquity`, `ComprehensiveIncome`, `Notes`, `Other`, `CoverPage`, `Unclassified`; document-entity (`jpdei_cor`) facts are not returned
+- `get_financial_facts` — structured XBRL facts for a single filing. Find one fact step by step: `outline: true` lists the sections, `section` with `outline: true` lists its headings (100 per page), `section` with `parent` returns the children with values (`context: "primary"` keeps only facts with no dimension member and not non-consolidated); every outline node has a `next` field with the arguments of the next call. `query` searches labels and concept names. Sections: `BalanceSheet`, `IncomeStatement`, `CashFlows`, `ChangesInEquity`, `ComprehensiveIncome`, `Notes`, `Other`, `CoverPage`, `Unclassified`; document-entity (`jpdei_cor`) facts are not returned
 - `get_calculation_tree` — XBRL calculation linkbase as a tree (how totals decompose into components)
 - `get_segment_breakdown` — segment/geography/consolidation-scope dimensional data, axis and member labels
 - `get_company_financials` — headline figures and a fiscal-year series by default; full statements with `include: ["statements"]`; officers and human-capital metrics with `include: ["officers"]` and `["human_capital"]` (see [Include values](#include-values)); `detail: "summary"` (default) or `"full"`
@@ -128,8 +128,8 @@ headline figures. An explicit list replaces the default `["indicators"]`.
 | `indicators` | The 主要な経営指標等の推移 figures per fiscal year (default) |
 | `statements` | Income statement, balance sheet and cash flow per period |
 | `omitted_concepts` | Statement concepts with no consolidated current-period value |
-| `human_capital` | 人的資本 metrics of the latest annual report: female managers ratio; male childcare-leave ratio for all, regular and non-regular employees, by legal basis (`male_childcare_leave_ratio`, `male_childcare_and_childcare_purpose_leave_ratio`, `male_childcare_leave_ratio_womens_act`); gender wage gap. For the reporting company and each consolidated subsidiary row (up to 100 rows) |
-| `officers` | 役員 of the latest annual report: `name_ja`, `title_ja`, `role` (`director_or_auditor`, `executive_officer`, `director_and_executive_officer`), `in_officer_table`, individually disclosed pay and shares held; `total` and `paid_only_count`; AGM `candidates`; pay by officer category with head counts (`unmatched_person_counts`); board gender composition |
+| `human_capital` | 人的資本 metrics of the latest annual report: female managers ratio; male childcare-leave ratio for all, regular and non-regular employees, by legal basis (`male_childcare_leave_ratio`, `male_childcare_and_childcare_purpose_leave_ratio`, `male_childcare_leave_ratio_womens_act`); gender wage gap. For the reporting company and each consolidated subsidiary row (up to 100 rows, with the filed company `name`) |
+| `officers` | 役員 of the latest annual report: `name_ja`, `title_ja`, `role` (`director_or_auditor`, `executive_officer`, `director_and_executive_officer`), `in_officer_table`, individually disclosed pay and shares held; `total` and `paid_only_count`; AGM `candidates` (the officers expected after the AGM, as filed); pay by officer category with head counts (`unmatched_person_counts`); board gender composition |
 
 `detail: "summary"` (default) keeps every figure and moves its source
 (`doc_id`, concept, context) up to the section and block level; long lists
@@ -149,7 +149,10 @@ is 4%). A filed `0` is `0`; a blank cell is `null`.
 | `policy_holdings` | 政策保有株式: 特定投資株式 and みなし保有株式 rows with issuer name, shares held and book value for the current and prior year end, holding purpose; `holder_scope` and `scope_counts` separate the company's own holdings from those of its largest holding subsidiaries |
 
 `policy_holdings` pages at most 40 rows; send `next_cursor` back as
-`cursor` for the next page. A year that the filer marked '＊' (below the
+`cursor` for the next page. Cursor pages return only the paged lists, so read
+`top_holders` and `holder_categories` from the first page. Rows with
+`held_at_year_end: false` were no longer held at year end; `scope_counts`
+gives `held_specified_count` and `held_deemed_count`. A year that the filer marked '＊' (below the
 disclosure threshold) carries `not_disclosed_below_threshold: true` with
 null figures. Names are as filed.
 
