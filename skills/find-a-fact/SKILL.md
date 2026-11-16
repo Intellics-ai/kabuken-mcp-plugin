@@ -62,8 +62,12 @@ changing arguments of the next call. Send it together with the `doc_id` and
    `next`; repeat this step until you reach the fact.
    With `section` and `parent`, read `total` and `context_counts`. Send
    `context: "primary"` to keep only facts with no dimension member and not
-   `NonConsolidatedMember`. Segment, non-consolidated and equity-component
-   facts stay available with `context: "all"`.
+   `NonConsolidatedMember`; it still includes prior periods and
+   `FilingDateInstant` facts. Segment, non-consolidated and equity-component
+   facts stay available with `context: "all"`. `concepts` cannot be combined
+   with `parent`.
+   Outline heading `concept` values are in the `prefix:Name` form. Send
+   `next` as returned.
 4. A node that is a fact and also has children carries `own_facts_next`.
    Use it to read the values of that node itself.
 

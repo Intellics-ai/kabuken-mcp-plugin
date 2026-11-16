@@ -52,7 +52,8 @@ Input: one company name, ticker or EDINET entity code, and the question.
     scope; the top-level counts are the totals.
   - Rows with `held_at_year_end: false` were no longer held at year end.
     Count held positions with `held_specified_count` and
-    `held_deemed_count` in `scope_counts`.
+    `held_deemed_count` in `scope_counts`. A row marked '＊' (below the
+    disclosure threshold) still counts as held.
   - The part carries `returned`, `total` and `truncated`. A page holds at
     most 40 rows, even with a higher `limit`.
   - A figure filed in another context (for example the filing date) is in
