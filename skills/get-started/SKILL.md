@@ -23,7 +23,16 @@ description: Look up a Japanese listed company in Kabuken and get figures from i
    - `get_filing_text` (`entity_code` or `doc_id`) to read the risk factors
      (`business_risks`) or management discussion (`md_and_a`) of an annual
      report as filed (see the `filing-text` skill). It returns the filer's
-     own Japanese text, not a summary.
+     own Japanese text, not a summary;
+   - `get_financial_facts` (`doc_id`) for one line item or note figure of a
+     filing, by keyword (`query`) or step by step (`outline`, `section`,
+     `parent`); see the `find-a-fact` skill;
+   - `get_company_financials` with `include: ["officers"]` or
+     `["human_capital"]` for officers, officer pay, AGM candidates and
+     人的資本 metrics; see the `people-and-governance` skill;
+   - `get_major_shareholders` (`entity_code`, optional `include`) for
+     large-shareholding reports, the top shareholders, owner categories and
+     policy holdings; see the `ownership` skill.
 4. State the period and the source filing for every figure.
 5. Kabuken has no stock prices and gives no investment advice. Do not add
    a price, market cap or valuation ratio.
