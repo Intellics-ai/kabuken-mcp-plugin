@@ -31,7 +31,7 @@ Input: one company name, ticker or EDINET entity code, and the question.
 ## Reading the parts
 
 - `large_holdings`: `filer_name` (the holder), `ownership_pct` (percent),
-  `shares_held` and the report date (field report_date). Identical reports are merged into one row; `doc_ids` lists
+  `shares_held` and `report_date`. Identical reports are merged into one row; `doc_ids` lists
   every source filing. An empty list means no such reports are on EDINET for
   this company.
 - `top_holders`: rank, `holder_name` and `holder_address` as filed,

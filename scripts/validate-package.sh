@@ -56,9 +56,19 @@ while IFS= read -r t; do
 done < <(jq -r "$oai.review.test_cases | (.positive + .negative)[] | .tools_triggered // empty" plugin.json | tr ',' '\n' | sed 's/^[[:space:]]*//; s/[[:space:]]*$//' | sort -u)
 
 # Every tool a skill names in backticks must be a real server tool.
+# A backticked name counts as a tool only in tool position: after call, use,
+# run or tool (`call \`x\``), before with, returns, takes or tool
+# (`\`x\` with`), or at the start of a list item (`- \`x\``). A field name
+# that only shares a tool prefix (`report_date`, `list_...`) is not a tool
+# reference. Each tool reference must match tool-names.txt exactly.
+tool_name_re="($(cut -d_ -f1 scripts/tool-names.txt | sort -u | paste -sd'|' -))_[a-z_]+"
+skill_tool_refs() {
+  grep -oHE "(([Cc]alls?|[Uu]s(e|es|ing)|[Rr]un|[Tt]ool) \`${tool_name_re}\`|\`${tool_name_re}\` (with|returns|takes|tool)|^[[:space:]]*([-*]|[0-9]+\.)[[:space:]]+\`${tool_name_re}\`)" "$@" \
+    | sed -E 's/^([^:]*):.*`([a-z_]+)`.*$/\1:\2/' | sort -u
+}
 while IFS=: read -r f t; do
   grep -qxF "$t" scripts/tool-names.txt || err "$f names an unknown tool: $t"
-done < <(grep -oHE "\`($(cut -d_ -f1 scripts/tool-names.txt | sort -u | paste -sd'|' -))_[a-z_]+\`" -r skills --include=SKILL.md | tr -d '`' | sort -u)
+done < <(find skills -name SKILL.md | sort | while IFS= read -r s; do skill_tool_refs "$s"; done)
 
 # Never put credentials or reviewer instructions in the package.
 for k in test_credentials reviewer_instructions; do
