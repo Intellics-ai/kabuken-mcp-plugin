@@ -201,6 +201,27 @@ else
 fi
 rm -rf "$dir"
 
+# 4h. OpenAI portal: "Add no more than three prompts" (Intellics-ai/kabuken-cloudflare#1981).
+# The real 2.2.0 manifest had five defaultPrompt entries and six JA example questions.
+dir=$(copy_repo)
+jq '.extensions["com.openai"].interface.defaultPrompt += ["What is Toyota'"'"'s EDINET entity code?"]' plugin.json > "$dir/plugin.json"
+out=$(bash "$dir/scripts/validate-package.sh" 2>&1)
+if [ $? -ne 0 ] && printf '%s\n' "$out" | grep -q 'defaultPrompt has 4 prompts; OpenAI allows at most 3'; then
+  pass "four defaultPrompt entries fail validation"
+else
+  fail "four defaultPrompt entries pass validation"
+fi
+rm -rf "$dir"
+dir=$(copy_repo)
+jq '.extensions["com.openai"].publication.translations["ja-JP"].description += "\n・任天堂の大株主は？"' plugin.json > "$dir/plugin.json"
+out=$(bash "$dir/scripts/validate-package.sh" 2>&1)
+if [ $? -ne 0 ] && printf '%s\n' "$out" | grep -q 'ja-JP description lists 4 example questions; OpenAI allows at most 3'; then
+  pass "four ja-JP example questions fail validation"
+else
+  fail "four ja-JP example questions pass validation"
+fi
+rm -rf "$dir"
+
 # 5. The repository itself must pass validation.
 if out=$(bash scripts/validate-package.sh 2>&1); then
   pass "repository passes validate-package.sh"
