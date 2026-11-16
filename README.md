@@ -36,14 +36,22 @@ EDINET MCP guide: [English](https://kabuken.intellics.ai/docs/en/edinet-mcp/) ·
   its components and their weights.
 - **Segment breakdowns.** `get_segment_breakdown` returns business,
   geographic and consolidation-scope figures by dimension axis and member.
-- **Major shareholders.** `get_major_shareholders` returns holders, holding
-  ratios and reporting dates from large-shareholding reports (大量保有報告書).
+- **Ownership.** `get_major_shareholders` returns large-shareholding reports
+  (大量保有報告書), and from the latest annual securities report the top
+  shareholders (大株主の状況), the owner categories (所有者別状況) and the
+  policy holdings (政策保有株式). See [Ownership](#ownership).
+- **Officers and human capital.** `get_company_financials` returns the
+  officers, officer pay, AGM candidates and 人的資本 metrics of the latest
+  annual securities report. See [Include values](#include-values).
+- **One fact at a time.** `get_financial_facts` finds one figure in a filing
+  by keyword, or step by step from the filing outline down to the fact.
 - **OAuth sign-in for Claude and ChatGPT.** Claude and ChatGPT connect with
   OAuth sign-in, with no API key to copy. MCP clients without OAuth can
   connect with an API key.
 - **Skill pack.** This repository is a plugin for Claude Code and a plugin
   package for ChatGPT and Codex, with skills for common tasks (company
-  snapshot, peer comparison, segment breakdown).
+  snapshot, peer comparison, segment breakdown, finding a fact, people and
+  governance, ownership).
 
 ## Install
 
@@ -86,10 +94,10 @@ Read-only tools, grouped by purpose. None write or modify data.
 - `get_filing_text` — narrative sections of an annual securities report (risk factors, management discussion) as filed, in Japanese, without AI processing
 
 **Financial facts**
-- `get_financial_facts` — structured XBRL facts for a single filing
+- `get_financial_facts` — structured XBRL facts for a single filing. Find one fact step by step: `outline: true` lists the sections, `section` with `outline: true` lists its headings (100 per page), `section` with `parent` returns the children with values (`context: "primary"` keeps only facts with no dimension member and not non-consolidated); every outline node has a `next` field with the arguments of the next call. `query` searches labels and concept names. Sections: `BalanceSheet`, `IncomeStatement`, `CashFlows`, `ChangesInEquity`, `ComprehensiveIncome`, `Notes`, `Other`, `CoverPage`, `Unclassified`; document-entity (`jpdei_cor`) facts are not returned
 - `get_calculation_tree` — XBRL calculation linkbase as a tree (how totals decompose into components)
 - `get_segment_breakdown` — segment/geography/consolidation-scope dimensional data, axis and member labels
-- `get_company_financials` — headline figures and a fiscal-year series by default; full statements with `include: ["statements"]`
+- `get_company_financials` — headline figures and a fiscal-year series by default; full statements with `include: ["statements"]`; officers and human-capital metrics with `include: ["officers"]` and `["human_capital"]` (see [Include values](#include-values)); `detail: "summary"` (default) or `"full"`
 
 **Comparison and screening**
 - `compare_companies` — side-by-side financial matrix for 2-5 companies from their latest annual securities report
@@ -97,7 +105,7 @@ Read-only tools, grouped by purpose. None write or modify data.
 - `get_industry_overview` — mean/median/count per ratio for an industry, plus top/bottom 3 companies
 
 **Ownership and risk**
-- `get_major_shareholders` — large-shareholding report (大量保有報告書) data: holder, percentage, shares, filing date
+- `get_major_shareholders` — large-shareholding report (大量保有報告書) data: holder, percentage, shares, filing date; with `include`, also the top shareholders, owner categories and policy holdings of the latest annual securities report (see [Ownership](#ownership))
 - `get_risk_context` — BOJ policy-rate sensitivity and METI export-control classification for a company
 
 **AI-powered analysis**
@@ -109,6 +117,44 @@ Read-only tools, grouped by purpose. None write or modify data.
 
 **Account**
 - `get_account_quota` — caller's current daily quota usage, limit, and reset time; does not itself consume quota
+
+## Include values
+
+`get_company_financials` takes `include`, a list of sections beyond the
+headline figures. An explicit list replaces the default `["indicators"]`.
+
+| Value | What it adds |
+| --- | --- |
+| `indicators` | The 主要な経営指標等の推移 figures per fiscal year (default) |
+| `statements` | Income statement, balance sheet and cash flow per period |
+| `omitted_concepts` | Statement concepts with no consolidated current-period value |
+| `human_capital` | 人的資本 metrics of the latest annual report: female managers ratio; male childcare-leave ratio for all, regular and non-regular employees, by legal basis (`male_childcare_leave_ratio`, `male_childcare_and_childcare_purpose_leave_ratio`, `male_childcare_leave_ratio_womens_act`); gender wage gap. For the reporting company and each consolidated subsidiary row (up to 100 rows, with the filed company `name`) |
+| `officers` | 役員 of the latest annual report: `name_ja`, `title_ja`, `role` (`director_or_auditor`, `executive_officer`, `director_and_executive_officer`), `in_officer_table`, individually disclosed pay and shares held; `total` and `paid_only_count`; AGM `candidates` (the officers expected after the AGM, as filed); pay by officer category with head counts (`unmatched_person_counts`); board gender composition |
+
+`detail: "summary"` (default) keeps every figure and moves its source
+(`doc_id`, concept, context) up to the section and block level; long lists
+are tables (`columns`, `rows`). `detail: "full"` puts the source on every
+figure and is several times larger. Ratios are fractions as filed (`0.04`
+is 4%). A filed `0` is `0`; a blank cell is `null`.
+
+## Ownership
+
+`get_major_shareholders` takes `include`:
+
+| Value | What it returns |
+| --- | --- |
+| `large_holdings` | Large-shareholding reports (大量保有報告書), newest first (default) |
+| `top_holders` | 大株主の状況: rank, holder name and address as filed, shares held, shareholding ratio |
+| `holder_categories` | 所有者別状況: shareholder count, units held and ratio for the seven EDINET owner categories, per share class |
+| `policy_holdings` | 政策保有株式: 特定投資株式 and みなし保有株式 rows with issuer name, shares held and book value for the current and prior year end, holding purpose; `holder_scope` and `scope_counts` separate the company's own holdings from those of its largest holding subsidiaries |
+
+`policy_holdings` pages at most 40 rows; send `next_cursor` back as
+`cursor` for the next page. Cursor pages return only the paged lists, so read
+`top_holders` and `holder_categories` from the first page. Rows with
+`held_at_year_end: false` were no longer held at year end; `scope_counts`
+gives `held_specified_count` and `held_deemed_count`. A year that the filer marked '＊' (below the
+disclosure threshold) carries `not_disclosed_below_threshold: true` with
+null figures. Names are as filed.
 
 ## Account
 
@@ -123,6 +169,12 @@ Get an account and a `kbk_` API key (or use OAuth) at
 - `/kabuken:segment-breakdown <company>` — business/geographic segment breakdown for a filing
 
 The `filing-text` skill loads when you ask for risk factors, management discussion or the original filing text; it reads them as filed with `get_filing_text`.
+
+These skills load when the question matches (English or Japanese):
+
+- `find-a-fact` — one line item, note figure or cover-page item of a filing, by keyword or step by step with `get_financial_facts`
+- `people-and-governance` — officers, officer pay, AGM candidates, board gender mix and human-capital metrics with `get_company_financials`
+- `ownership` — large-shareholding reports, top shareholders, owner categories and policy holdings with `get_major_shareholders`
 
 ## Attribution
 

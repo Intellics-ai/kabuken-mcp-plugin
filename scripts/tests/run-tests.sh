@@ -171,6 +171,36 @@ else
   fail "built ZIP has no filing text skill"
 fi
 
+# 4b. Skill tool-name check (kabuken-cloudflare#1960): a backticked field that
+# shares a tool prefix passes; an unknown tool name in tool position fails.
+old_tool_re="\`($(cut -d_ -f1 scripts/tool-names.txt | sort -u | paste -sd'|' -))_[a-z_]+\`"
+old_flagged=$(grep -oE "$old_tool_re" "$fixtures/skill-field-names.md" | tr -d '`' | grep -vxFf scripts/tool-names.txt)
+if printf '%s\n' "$old_flagged" | grep -qxF report_date; then
+  pass "old prefix check flags report_date (the false positive)"
+else
+  fail "old prefix check does not flag report_date; the fixture no longer shows the false positive"
+fi
+dir=$(copy_repo)
+mkdir -p "$dir/skills/field-names"
+cp "$fixtures/skill-field-names.md" "$dir/skills/field-names/SKILL.md"
+if out=$(bash "$dir/scripts/validate-package.sh" 2>&1); then
+  pass "field names report_date, list_... and get_... in a skill pass validation"
+else
+  fail "field names in a skill fail validation"
+  printf '%s\n' "$out" | grep -E '^ERROR' | sed 's/^/     /'
+fi
+rm -rf "$dir"
+dir=$(copy_repo)
+mkdir -p "$dir/skills/unknown-tool"
+cp "$fixtures/skill-unknown-tool.md" "$dir/skills/unknown-tool/SKILL.md"
+out=$(bash "$dir/scripts/validate-package.sh" 2>&1)
+if [ $? -ne 0 ] && printf '%s\n' "$out" | grep -q 'names an unknown tool: get_stock_price'; then
+  pass "unknown tool get_stock_price in a skill fails validation"
+else
+  fail "unknown tool get_stock_price in a skill passes validation"
+fi
+rm -rf "$dir"
+
 # 5. The repository itself must pass validation.
 if out=$(bash scripts/validate-package.sh 2>&1); then
   pass "repository passes validate-package.sh"

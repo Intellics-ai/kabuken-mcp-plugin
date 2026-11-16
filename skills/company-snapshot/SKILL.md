@@ -33,4 +33,7 @@ Input: one company name, ticker, or EDINET entity code, given by the user
    not size or value.
 6. If the user asks about risks, outlook or the business, follow the
    `filing-text` skill (`get_filing_text`) and quote the filed text.
-7. Do not add a stock price, market cap or P/E. Kabuken has no price data.
+7. If the user asks about officers, officer pay or human-capital metrics,
+   follow the `people-and-governance` skill. If the user asks who owns the
+   company, follow the `ownership` skill.
+8. Do not add a stock price, market cap or P/E. Kabuken has no price data.
