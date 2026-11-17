@@ -80,6 +80,26 @@ Codex: `plugin.json` and `mcp.json` at the root. Claude Code reads
 `.claude-plugin/plugin.json` and `.mcp.json`. See
 [Plugin package](#plugin-package).
 
+## Update to the latest version
+
+What changed in each release: [What's new](https://kabuken.intellics.ai/docs/en/whats-new/).
+
+- **Tools and data, all clients.** The MCP server is hosted, so tool and
+  data changes reach every client at once. No action is needed. Only the
+  skills come from the plugin.
+- **Claude (claude.ai, Cowork, Claude Code) from Anthropic's directory.** A
+  new plugin version reaches your account when Anthropic publishes it.
+  Claude Code downloads it at the next start; run `/reload-plugins` to load
+  it in an open session.
+- **Claude Code with a local clone (`claude --plugin-dir`).** Run `git pull`
+  in the clone, then start a new session.
+- **Claude Code without the plugin (`claude mcp add`).** No action is needed.
+- **ChatGPT, plugin from the directory.** A new version replaces the old one
+  when it is published. No action is needed.
+- **ChatGPT, developer mode.** Do the steps in
+  [ChatGPT (developer mode, beta)](#chatgpt-developer-mode-beta) again with
+  the latest `kabuken-plugin.zip`.
+
 ## Tools
 
 Read-only tools, grouped by purpose. None write or modify data.
