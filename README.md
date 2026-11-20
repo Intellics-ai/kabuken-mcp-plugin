@@ -43,6 +43,9 @@ EDINET MCP guide: [English](https://kabuken.intellics.ai/docs/en/edinet-mcp/) ·
 - **Officers and human capital.** `get_company_financials` returns the
   officers, officer pay, AGM candidates and 人的資本 metrics of the latest
   annual securities report. See [Include values](#include-values).
+- **Analysis models.** `get_company_financials` computes a DuPont 3-step
+  decomposition of ROE and a Sloan-style cash-flow accrual ratio per fiscal
+  year from filing figures. See [Include values](#include-values).
 - **One fact at a time.** `get_financial_facts` finds one figure in a filing
   by keyword, or step by step from the filing outline down to the fact.
 - **OAuth sign-in for Claude and ChatGPT.** Claude and ChatGPT connect with
@@ -117,7 +120,7 @@ Read-only tools, grouped by purpose. None write or modify data.
 - `get_financial_facts` — structured XBRL facts for a single filing. Find one fact step by step: `outline: true` lists the sections, `section` with `outline: true` lists its headings (100 per page), `section` with `parent` returns the children with values (`context: "primary"` keeps only facts with no dimension member and not non-consolidated); every outline node has a `next` field with the arguments of the next call. `query` searches labels and concept names. Sections: `BalanceSheet`, `IncomeStatement`, `CashFlows`, `ChangesInEquity`, `ComprehensiveIncome`, `Notes`, `Other`, `CoverPage`, `Unclassified`; document-entity (`jpdei_cor`) facts are not returned
 - `get_calculation_tree` — XBRL calculation linkbase as a tree (how totals decompose into components)
 - `get_segment_breakdown` — segment/geography/consolidation-scope dimensional data, axis and member labels
-- `get_company_financials` — headline figures and a fiscal-year series by default; full statements with `include: ["statements"]`; officers and human-capital metrics with `include: ["officers"]` and `["human_capital"]` (see [Include values](#include-values)); `detail: "summary"` (default) or `"full"`
+- `get_company_financials` — headline figures and a fiscal-year series by default; full statements with `include: ["statements"]`; officers and human-capital metrics with `include: ["officers"]` and `["human_capital"]`; DuPont and Sloan-style accrual ratios with `include: ["indicators", "dupont", "sloan"]` (see [Include values](#include-values)); `detail: "summary"` (default) or `"full"`
 
 **Comparison and screening**
 - `compare_companies` — side-by-side financial matrix for 2-5 companies from their latest annual securities report
@@ -148,6 +151,8 @@ headline figures. An explicit list replaces the default `["indicators"]`.
 | `indicators` | The 主要な経営指標等の推移 figures per fiscal year (default) |
 | `statements` | Income statement, balance sheet and cash flow per period |
 | `omitted_concepts` | Statement concepts with no consolidated current-period value |
+| `dupont` | DuPont 3-step decomposition of ROE per fiscal year (`net_margin`, `asset_turnover`, `equity_multiplier`, `roe`), with inputs, averaging basis, the reported ROE and `difference_vs_reported`; not applicable to banks, insurers and interim filings |
+| `sloan` | Sloan-style cash-flow accrual ratio per fiscal year: (net income - operating cash flow) / average total assets, with inputs and averaging basis |
 | `human_capital` | 人的資本 metrics of the latest annual report: female managers ratio; male childcare-leave ratio for all, regular and non-regular employees, by legal basis (`male_childcare_leave_ratio`, `male_childcare_and_childcare_purpose_leave_ratio`, `male_childcare_leave_ratio_womens_act`); gender wage gap. For the reporting company and each consolidated subsidiary row (up to 100 rows, with the filed company `name`) |
 | `officers` | 役員 of the latest annual report: `name_ja`, `title_ja`, `role` (`director_or_auditor`, `executive_officer`, `director_and_executive_officer`), `in_officer_table`, individually disclosed pay and shares held; `total` and `paid_only_count`; AGM `candidates` (the officers expected after the AGM, as filed); pay by officer category with head counts (`unmatched_person_counts`); board gender composition |
 
