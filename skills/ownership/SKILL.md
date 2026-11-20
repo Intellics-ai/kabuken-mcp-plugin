@@ -22,6 +22,11 @@ Input: one company name, ticker or EDINET entity code, and the question.
      other companies).
    For "who owns it", use `["top_holders", "large_holdings"]`. For
    cross-shareholdings, use `["policy_holdings"]`.
+   For `large_holdings`, `view` selects the shape. `view: "reports"` (the
+   default) lists every report row. `view: "latest_per_filer"` returns one row
+   per filer under `large_holdings.holders`: the latest ratio, the ratio on
+   that filer's previous report and `change_pt`, the change in percentage
+   points. `below_threshold` marks a filer now under 5%. This view is not paged.
 3. Leave `detail` at `summary` (the default). Use `detail: "full"` only when
    the user needs `doc_id` and `period_end` on every row.
 4. If `next_cursor` is set and the user wants more rows, call again with
