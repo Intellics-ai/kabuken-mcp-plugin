@@ -173,6 +173,13 @@ is 4%). A filed `0` is `0`; a blank cell is `null`.
 | `holder_categories` | 所有者別状況: shareholder count, units held and ratio for the seven EDINET owner categories, per share class |
 | `policy_holdings` | 政策保有株式: 特定投資株式 and みなし保有株式 rows with issuer name, shares held and book value for the current and prior year end, holding purpose; `holder_scope` and `scope_counts` separate the company's own holdings from those of its largest holding subsidiaries |
 
+`get_major_shareholders` also takes `view` for `large_holdings`:
+
+| Value | What it returns |
+| --- | --- |
+| `reports` | Every large-shareholding report row (default) |
+| `latest_per_filer` | One row per filer: latest ratio, ratio on the previous report and the change in percentage points; `below_threshold` marks a filer now under 5%. Not paged |
+
 `policy_holdings` pages at most 40 rows; send `next_cursor` back as
 `cursor` for the next page. Cursor pages return only the paged lists, so read
 `top_holders` and `holder_categories` from the first page. Rows with

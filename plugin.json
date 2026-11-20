@@ -117,7 +117,7 @@
       },
       "publication": {
         "countries": [],
-        "release_notes": "Kabuken 2.3.0: get_company_financials adds DuPont 3-step ROE and Sloan-style cash-flow accrual ratio per fiscal year, with inputs, averaging basis and the reported ROE check. New skill: analysis-models. See the What's new page: https://kabuken.intellics.ai/docs/en/whats-new/",
+        "release_notes": "Kabuken 2.3.0: get_company_financials adds DuPont 3-step ROE and Sloan-style cash-flow accrual ratio per fiscal year, with inputs, averaging basis and the reported ROE check. New skill: analysis-models. Shareholders: one row per filer with the change since the previous report. See the What's new page: https://kabuken.intellics.ai/docs/en/whats-new/",
         "translations": {
           "ja-JP": {
             "subtitle": "日本の上場企業の開示データ",
