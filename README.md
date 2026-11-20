@@ -195,6 +195,7 @@ These skills load when the question matches (English or Japanese):
 - `find-a-fact` — one line item, note figure or cover-page item of a filing, by keyword or step by step with `get_financial_facts`
 - `people-and-governance` — officers, officer pay, AGM candidates, board gender mix and human-capital metrics with `get_company_financials`
 - `ownership` — large-shareholding reports, top shareholders, owner categories and policy holdings with `get_major_shareholders`
+- `analysis-models` — DuPont 3-step ROE decomposition and Sloan-style cash-flow accrual ratio per fiscal year with `get_company_financials`
 
 ## Attribution
 

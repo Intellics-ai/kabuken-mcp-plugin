@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "kabuken",
-  "version": "2.2.2",
+  "version": "2.3.0",
   "description": "Financial data from the official EDINET filings of Japanese listed companies, with the source filing for each figure. No stock prices or investment advice.",
   "author": {
     "name": "Intellics K.K.",
@@ -38,6 +38,7 @@
           "Show top shareholders, owner categories and policy holdings",
           "Show officers, officer pay and human-capital metrics",
           "Compare companies side by side",
+          "Break ROE into DuPont components and show cash-flow accruals",
           "List company filings",
           "Summarize a company's major facilities by country and prefecture"
         ],
@@ -62,10 +63,10 @@
         "test_cases": {
           "positive": [
             {
-              "description": "Company lookup: resolve a company name to its EDINET entity code and find its latest annual securities report.",
-              "prompt": "Find Toyota Motor in Kabuken. What is its EDINET entity code, and what is its latest annual securities report?",
-              "tools_triggered": "search_companies, list_documents",
-              "expected_behavior": "Returns Toyota Motor Corporation (トヨタ自動車株式会社) with entity code E02144, then lists its filings and identifies the most recent annual securities report (有価証券報告書) with its submission date, period and source filing doc_id. No stock price is shown."
+              "description": "DuPont 3-step ROE decomposition and Sloan-style cash-flow accrual ratio per fiscal year.",
+              "prompt": "Break down Nintendo's ROE with the DuPont decomposition and show the cash-flow accrual ratio for the last three annual periods.",
+              "tools_triggered": "search_companies, get_company_financials",
+              "expected_behavior": "Resolves Nintendo (7974) to its entity code and calls get_company_financials once with include indicators, dupont and sloan. Shows one row per fiscal year with the doc_id and fiscal year end: net margin, asset turnover, equity multiplier and ROE, then the accrual ratio. States the averaging basis (average of opening and closing balances, or closing only), shows the reported ROE and the difference from it, and names any missing input instead of estimating it. Does not call any figure good or bad and gives no investment advice."
             },
             {
               "description": "Latest annual revenue and operating income, with the source filing.",
@@ -116,7 +117,7 @@
       },
       "publication": {
         "countries": [],
-        "release_notes": "Kabuken 2.2.2: get_company_financials adds officers (role, AGM candidates, pay by category) and human-capital metrics (female managers, male childcare leave by legal basis, gender pay gap) with a compact summary shape; get_major_shareholders adds top shareholders, owner categories and policy holdings; get_financial_facts finds one figure step by step from the filing outline or by keyword. New skills: find-a-fact, people-and-governance, ownership. Example prompts reduced to three. Example prompts shortened for the OpenAI directory.",
+        "release_notes": "Kabuken 2.3.0: get_company_financials adds DuPont 3-step ROE and Sloan-style cash-flow accrual ratio per fiscal year, with inputs, averaging basis and the reported ROE check. New skill: analysis-models. See the What's new page: https://kabuken.intellics.ai/docs/en/whats-new/",
         "translations": {
           "ja-JP": {
             "subtitle": "日本の上場企業の開示データ",
