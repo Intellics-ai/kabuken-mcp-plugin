@@ -14,11 +14,16 @@ number of fiscal years.
    or `get_company` (`id`, `id_type: "ticker"`). If several companies match,
    ask the user to pick one.
 2. Call `get_company_financials` with `entity_code` and
-   `include: ["indicators", "dupont", "sloan"]`. Add `periods` or the
-   period options the tool offers when the user wants more than the
-   latest years.
-3. Read `dupont` and `sloan` for each fiscal year. Every year carries its
-   own `doc_id` and `fiscal_year_end`.
+   `include: ["indicators", "dupont", "sloan"]`. Set `periods` (the number
+   of periods) and `period_type` (`ANNUAL`, `INTERIM` or `ALL`) when the
+   user wants more than the latest year.
+3. Read `analysis_models.dupont` and `analysis_models.sloan` in each entry of
+   `periods`. Every entry carries its own `doc_id` and `fiscal_year_end`.
+   The ratios sit under `components`: `components.net_margin`,
+   `asset_turnover`, `equity_multiplier` and `roe` for DuPont;
+   `total_accruals`, `average_total_assets` and `accrual_ratio` for Sloan.
+   Each component has `value`, `formula`, `omission_reason` and
+   `missing_inputs`.
 
 ## Present the result
 
@@ -43,8 +48,8 @@ Give one row per fiscal year, each with its `doc_id` and fiscal year end.
   uses the mean of the opening and closing balance. `closing_only` means the
   opening balance was not available and the closing balance alone was used.
   Say so, because a closing-only figure is a different measure.
-- The `reported_roe` input and the `difference_vs_reported` component are the
-  check row: the ROE the company reports, and the computed ROE minus the
+- `dupont.reported_roe` is the ROE the company reports.
+  `dupont.components.difference_vs_reported` is the computed ROE minus the
   reported ROE. Show both. A difference does not mean either figure is wrong;
   the company may use another definition or averaging.
 - A component with `value: null` has an `omission_reason`:
@@ -61,7 +66,8 @@ Give one row per fiscal year, each with its `doc_id` and fiscal year end.
 `applicability` is not `applicable` for banks, insurers and other statement
 formats with a different balance sheet structure
 (`not_applicable_to_statement_format`), and for interim filings
-(`annual_filing_required`). Tell the user the model does not apply to that
+(`annual_filing_required`). For such a filing each component's
+`omission_reason` equals `applicability`. Tell the user the model does not apply to that
 filing and why. Do not compute it by hand.
 
 ## Attribution
