@@ -9,7 +9,7 @@ description: Look up a Japanese listed company in Kabuken and get figures from i
    Japanese). Matches are in `companies`. Note the company's EDINET entity
    code (`company_entity_code`, for example `E02144` for Toyota). If
    several companies match, ask the user to pick one.
-Before calling a data tool for a company, check `available_on_this_account` in the `search_companies` result; if it is false, choose another company, or read the refusal's `message`, which lists available companies in the same industry.
+   Before calling a data tool for a company, check `available_on_this_account` in the `search_companies` result; if it is false, choose another company, or read the refusal's `message`, which lists available companies in the same industry.
 2. Call `get_company_financials` with `entity_code` for revenue, profit,
    assets and equity from recent annual reports. For cash flow or full
    statements, also pass `include: ["statements"]`.
