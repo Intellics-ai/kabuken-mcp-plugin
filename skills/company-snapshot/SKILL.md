@@ -15,6 +15,9 @@ Input: one company name, ticker, or EDINET entity code, given by the user
    - ticker: call `get_company` with `id` and `id_type: "ticker"`;
    - entity code: call `get_company` with `id` (`id_type` defaults to
      `entity_code`).
+
+   Before calling a data tool for a company, check `available_on_this_account` in the `search_companies` result; if it is false, choose another company, or read the refusal's `message`, which lists available companies in the same industry.
+
 2. Call `get_company_financials` with `entity_code` (optional
    `period_type`: `ANNUAL` default, `INTERIM` or `ALL`; optional `periods`,
    default 3). If a tool says a feature is not available for this account,
