@@ -15,6 +15,11 @@ commas, given by the user (in Claude Code, the command argument).
    `search_companies` with `query` for a name, or `get_company` with `id`
    and `id_type: "ticker"` for a ticker. Ask the user if a name is
    ambiguous.
+   Before calling a data tool for a company, check
+   `available_on_this_account` in the `search_companies` or
+   `get_company` result; if it is false, choose another company, or
+   read the refusal's `message`, which may list available companies in
+   the same industry.
 3. Call `compare_companies` with `entity_codes` set to the list of entity
    codes (not names or tickers). It returns revenue, net income, total
    assets, equity, operating income and the period-end date from each
