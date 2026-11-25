@@ -2,7 +2,7 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.Intellics-ai/kabuken",
   "title": "Kabuken",
-  "description": "Japanese stocks (日本株, TSE/Tokyo Stock Exchange): EDINET financials, shareholders. No stock prices.",
+  "description": "Japanese stocks (日本株/TSE): EDINET financials, segments, shareholders. No stock prices.",
   "status": "active",
   "repository": {
     "url": "https://github.com/Intellics-ai/kabuken-mcp-plugin",
