@@ -34,7 +34,13 @@ Input: one company name, ticker, or EDINET entity code, given by the user
    with `id` and `include_sites: true`. It returns counts of major
    facilities by country and by prefecture from the latest annual report,
    with the source filing. The counts are rows of the facilities tables,
-   not size or value.
+   not size or value. If the user asks for the facilities themselves, also
+   pass `sites_detail: true`. Each row is one facility row of the filing,
+   with the location as filed. Page with `sites_limit` (default 50, up to
+   200) and `sites_offset` while `has_more` is true. A row with
+   `is_group: true` stands for several sites (for example 「他19店舗」, a
+   whole region, or a head office with a count of branches). Do not count
+   it as one place.
 6. If the user asks about risks, outlook or the business, follow the
    `filing-text` skill (`get_filing_text`) and quote the filed text.
 7. If the user asks about officers, officer pay or human-capital metrics,
