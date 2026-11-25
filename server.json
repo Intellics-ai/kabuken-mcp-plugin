@@ -2,14 +2,14 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.Intellics-ai/kabuken",
   "title": "Kabuken",
-  "description": "EDINET filings of Japanese stocks: financial statements, segments, shareholders. No stock prices.",
+  "description": "Japanese stocks (日本株/TSE): EDINET financials, segments, shareholders. No stock prices.",
   "status": "active",
   "repository": {
     "url": "https://github.com/Intellics-ai/kabuken-mcp-plugin",
     "source": "github",
     "id": "1383159624"
   },
-  "version": "2.3.0",
+  "version": "2.3.1",
   "icons": [
     { "src": "https://raw.githubusercontent.com/Intellics-ai/kabuken-mcp-plugin/main/assets/icon.png", "mimeType": "image/png", "sizes": ["180x180"], "theme": "light" },
     { "src": "https://raw.githubusercontent.com/Intellics-ai/kabuken-mcp-plugin/main/assets/icon-dark.png", "mimeType": "image/png", "sizes": ["180x180"], "theme": "dark" }

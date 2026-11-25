@@ -23,6 +23,14 @@ MCPクライアントから、日本の上場企業が提出した有価証券�
 示します。株価、市場データ、投資助言は提供しません。接続先は
 `https://kabuken.intellics.ai/mcp` です。
 
+`get_company` に `include_sites: true` と `sites_detail: true` を指定すると、
+有価証券報告書の「主要な設備の状況」に記載された設備を1行ずつ返します
+（`sites_limit` と `sites_offset` でページ送り）。`is_group` が true の行は
+1か所ではなく複数の拠点をまとめた行です（「他19店舗」のような店舗群、
+地域単位の行、拠点数だけを示す本社の行など）。`list_documents` は、
+訂正発行登録書のようなPDFのみの提出書類も一覧に含めます。これらは
+`doc_xbrl_flag` が false で、財務数値は抽出されません。
+
 EDINET MCP guide: [English](https://kabuken.intellics.ai/docs/en/edinet-mcp/) ·
 [日本語](https://kabuken.intellics.ai/docs/ja/edinet-mcp/)
 
@@ -110,10 +118,11 @@ Read-only tools, grouped by purpose. None write or modify data.
 **Company and industry discovery**
 - `search_companies` — search Japanese listed companies by name (EN or JA, partial match)
 - `get_company` — full company record by any identifier (entity code, ticker, name). With `include_sites: true`, it also returns a summary of the company's major facilities from its latest annual report: counts by country and by prefecture, with the source filing.
+  Add `sites_detail: true` to also get one row per listed facility, in filing order, with the location as filed, prefecture, municipality and country. Page the rows with `sites_limit` (1-200, default 50) and `sites_offset`; `has_more` tells you when more rows follow. A row with `is_group: true` stands for several sites, not one place: for example a store group such as 「他19店舗」 (19 other stores), a row for a whole region, or a head office given with a count of branches.
 - `list_industries` — TSE industry classification taxonomy
 
 **Filings**
-- `list_documents` — EDINET filing list for a company, with submission dates, period coverage, and XBRL/PDF availability
+- `list_documents` — EDINET filing list for a company, with submission dates, period coverage, and XBRL/PDF availability. The list also includes filings that EDINET has only as PDF, such as amended shelf registrations (訂正発行登録書). These have `doc_xbrl_flag: false`, and no financial figures are taken from them
 - `get_filing_text` — narrative sections of an annual securities report (risk factors, management discussion) as filed, in Japanese, without AI processing
 
 **Financial facts**

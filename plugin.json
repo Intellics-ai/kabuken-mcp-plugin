@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "kabuken",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "Financial data from the official EDINET filings of Japanese listed companies, with the source filing for each figure. No stock prices or investment advice.",
   "author": {
     "name": "Intellics K.K.",
@@ -117,7 +117,7 @@
       },
       "publication": {
         "countries": [],
-        "release_notes": "Kabuken 2.3.0: get_company_financials adds DuPont 3-step ROE and Sloan-style cash-flow accrual ratio per fiscal year, with inputs, averaging basis and the reported ROE check. New skill: analysis-models. Shareholders: one row per filer with the change since the previous report. See the What's new page: https://kabuken.intellics.ai/docs/en/whats-new/",
+        "release_notes": "Kabuken 2.3.1: get_company with sites_detail lists each major facility row with paging, and marks rows that stand for several sites with is_group. list_documents also lists PDF-only filings such as amended shelf registrations. See the What's new page: https://kabuken.intellics.ai/docs/en/whats-new/",
         "translations": {
           "ja-JP": {
             "subtitle": "日本の上場企業の開示データ",

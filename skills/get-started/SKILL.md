@@ -18,12 +18,18 @@ description: Look up a Japanese listed company in Kabuken and get figures from i
    statements, also pass `include: ["statements"]`.
 3. For other questions, use the entity code with:
    - `list_documents` (`entity_code`) to find a filing and its `doc_id`
-     in `documents`;
+     in `documents`. The list also has PDF-only filings, such as amended
+     shelf registrations (訂正発行登録書), with `doc_xbrl_flag: false`;
+     no financial figures are taken from them;
    - `get_segment_breakdown` (`doc_id`) for figures by segment or region;
    - `compare_companies` (`entity_codes`, 2 to 5 codes) for peers;
    - `get_company` (`id`, `include_sites: true`) for a summary of the
      company's major facilities from its latest annual report: counts by
-     country and by prefecture, with the source filing;
+     country and by prefecture, with the source filing. Add
+     `sites_detail: true` for one row per listed facility, paged with
+     `sites_limit` and `sites_offset`. A row with `is_group: true` stands
+     for several sites (a store group such as 「他19店舗」, a region, or a
+     head office with a count of branches), not one place;
    - `get_filing_text` (`entity_code` or `doc_id`) to read the risk factors
      (`business_risks`) or management discussion (`md_and_a`) of an annual
      report as filed (see the `filing-text` skill). It returns the filer's
